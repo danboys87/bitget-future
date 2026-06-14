@@ -1,0 +1,109 @@
+[2026-06-11T23:00:49.478Z] [STARTUP     ] 🧪 DRY RUN mode
+[2026-06-11T23:00:49.480Z] [STARTUP     ] Config:
+[2026-06-11T23:00:49.481Z] [STARTUP     ]   Budget/trade : 10 USDT | Lev: 5x | Exposure: 50 USDT
+[2026-06-11T23:00:49.482Z] [STARTUP     ]   Margin mode  : isolated
+[2026-06-11T23:00:49.483Z] [STARTUP     ]   Execute mode : ⚡ AUTO
+[2026-06-11T23:00:49.483Z] [STARTUP     ]   Scheduling   : screen=60m | manage=5m
+[2026-06-11T23:00:51.917Z] [STATE       ] 💾 State loaded: 0 posisi terbuka
+[2026-06-11T23:00:51.919Z] [SYMBOL_FILTER] Memuat daftar crypto spot dari Bitget...
+[2026-06-11T23:00:52.230Z] [SYMBOL_FILTER] ✅ Cache updated: 632 crypto, 462 non-crypto difilter
+[2026-06-11T23:00:52.232Z] [STARTUP     ] Management cycle pertama...
+[2026-06-11T23:00:52.233Z] [MANAGER     ] Tidak ada posisi terbuka
+[2026-06-11T23:00:52.236Z] [TELEGRAM    ] Polling dihentikan
+[2026-06-11T23:00:52.238Z] [CRON        ] Cron aktif:
+[2026-06-11T23:00:52.240Z] [CRON        ]   Screening  : setiap 60 menit
+[2026-06-11T23:00:52.244Z] [CRON        ]   Management : setiap 5 menit
+[2026-06-11T23:00:52.245Z] [CRON        ]   Mode       : ⚡ AUTO
+[2026-06-11T23:00:52.260Z] [TELEGRAM    ] ✅ Futures bot Telegram polling aktif
+[2026-06-11T23:00:52.343Z] [API_SERVER  ] ✅ Futures Dashboard API → http://localhost:3001
+[2026-06-11T23:00:52.481Z] [TELEGRAM    ] Cmd: /help
+[2026-06-11T23:01:23.189Z] [API_SERVER  ] Execute mode → MANUAL
+[2026-06-11T23:02:09.598Z] [API_SERVER  ] Execute mode → AUTO
+[2026-06-11T23:02:09.785Z] [API_SERVER  ] Execute mode → MANUAL
+[2026-06-11T23:02:18.245Z] [API_SERVER  ] Execute mode → AUTO
+[2026-06-11T23:02:22.499Z] [API_SERVER  ] Execute mode → MANUAL
+[2026-06-11T23:02:33.161Z] [SCREENER    ] ══ LONG Screener (Gainer 5-20% → UTBot BUY) ══
+[2026-06-11T23:02:33.464Z] [SYMBOL_FILTER] Filter: 622 → 373 ticker (249 non-crypto dibuang)
+[2026-06-11T23:02:33.470Z] [SCREENER    ] Gainer ≥5%: 18 koin → scan UTBot BUY...
+[2026-06-11T23:02:40.054Z] [SCREENER    ] Long screener selesai → 0 kandidat LONG
+[2026-06-11T23:03:10.898Z] [SCREENER    ] ══ SHORT Screener (Losers 3-20% → UTBot SELL) ══
+[2026-06-11T23:03:11.150Z] [SYMBOL_FILTER] Filter: 622 → 373 ticker (249 non-crypto dibuang)
+[2026-06-11T23:03:11.156Z] [SCREENER    ] Losers ≤-3%: 0 koin → scan UTBot SELL...
+[2026-06-11T23:03:11.158Z] [SCREENER    ] Short screener selesai → 0 kandidat SHORT
+[2026-06-11T23:05:00.438Z] [MANAGER     ] Tidak ada posisi terbuka
+[2026-06-11T23:10:00.661Z] [MANAGER     ] Tidak ada posisi terbuka
+[2026-06-11T23:15:00.805Z] [MANAGER     ] Tidak ada posisi terbuka
+[2026-06-11T23:20:00.995Z] [MANAGER     ] Tidak ada posisi terbuka
+[2026-06-11T23:20:21.432Z] [EXECUTOR    ] 📈 OPEN LONG: STRKUSDT | lev=5x | budget=10 USDT | mode=isolated
+[2026-06-11T23:20:21.535Z] [EXECUTOR    ] [DRY RUN] LONG STRKUSDT size=1448.5196 @ 0.034518 | SL=0.033482(custom) TP1=0.036244(custom) Liq=0.027752
+[2026-06-11T23:20:21.541Z] [STATE       ] 📂 LONG terbuka: STRKUSDT @ 0.034518 | size=1448.5196 | lev=5x | liq=0.0278
+[2026-06-11T23:20:21.545Z] [TRADE       ] 🟢 LONG STRKUSDT | qty=1448.5196 | price=0.034518 | reason=manual
+[2026-06-11T23:21:56.653Z] [EXECUTOR    ] 📈 OPEN LONG: RENDERUSDT | lev=5x | budget=10 USDT | mode=isolated
+[2026-06-11T23:21:56.766Z] [EXECUTOR    ] [DRY RUN] LONG RENDERUSDT size=30.6974 @ 1.6288 | SL=1.582749(custom) TP1=1.713285(custom) Liq=1.309555
+[2026-06-11T23:21:56.770Z] [STATE       ] 📂 LONG terbuka: RENDERUSDT @ 1.6288 | size=30.6974 | lev=5x | liq=1.3096
+[2026-06-11T23:21:56.771Z] [TRADE       ] 🟢 LONG RENDERUSDT | qty=30.6974 | price=1.6288 | reason=manual
+[2026-06-11T23:23:26.343Z] [EXECUTOR    ] 📈 OPEN LONG: AEROUSDT | lev=5x | budget=10 USDT | mode=isolated
+[2026-06-11T23:23:26.445Z] [EXECUTOR    ] [DRY RUN] LONG AEROUSDT size=143.3897 @ 0.3487 | SL=0.338239(custom) TP1=0.359161(custom) Liq=0.280355
+[2026-06-11T23:23:26.450Z] [STATE       ] 📂 LONG terbuka: AEROUSDT @ 0.3487 | size=143.3897 | lev=5x | liq=0.2804
+[2026-06-11T23:23:26.454Z] [TRADE       ] 🟢 LONG AEROUSDT | qty=143.3897 | price=0.3487 | reason=manual
+[2026-06-11T23:25:00.192Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:25:10.199Z] [MANAGER_ERROR] Error evaluasi STRKUSDT long: timeout of 10000ms exceeded
+[2026-06-11T23:25:10.713Z] [MANAGER     ] RENDERUSDT LONG | price=1.63 entry=1.6288 PnL=0.37% | hold=0.1h | BEP=no | trail=off | liqDist=19.7%
+[2026-06-11T23:25:10.716Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.7% dari liquidasi!
+[2026-06-11T23:25:17.957Z] [MANAGER     ] AEROUSDT LONG | price=0.3487 entry=0.3487 PnL=0.00% | hold=0.0h | BEP=no | trail=off | liqDist=19.6%
+[2026-06-11T23:25:17.958Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: AEROUSDT long — 19.6% dari liquidasi!
+[2026-06-11T23:25:18.651Z] [MANAGER     ] Management cycle selesai
+[2026-06-11T23:30:00.408Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:30:00.509Z] [MANAGER     ] STRKUSDT LONG | price=0.034441 entry=0.034518 PnL=-1.12% | hold=0.2h | BEP=no | trail=off | liqDist=19.4%
+[2026-06-11T23:30:00.511Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: STRKUSDT long — 19.4% dari liquidasi!
+[2026-06-11T23:30:01.839Z] [MANAGER     ] RENDERUSDT LONG | price=1.6286 entry=1.6288 PnL=-0.06% | hold=0.1h | BEP=no | trail=off | liqDist=19.6%
+[2026-06-11T23:30:01.839Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.6% dari liquidasi!
+[2026-06-11T23:30:02.599Z] [MANAGER     ] AEROUSDT LONG | price=0.3483 entry=0.3487 PnL=-0.57% | hold=0.1h | BEP=no | trail=off | liqDist=19.5%
+[2026-06-11T23:30:02.600Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: AEROUSDT long — 19.5% dari liquidasi!
+[2026-06-11T23:30:03.266Z] [MANAGER     ] Management cycle selesai
+[2026-06-11T23:35:00.599Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:35:00.793Z] [MANAGER     ] STRKUSDT LONG | price=0.034545 entry=0.034518 PnL=0.39% | hold=0.2h | BEP=no | trail=off | liqDist=19.7%
+[2026-06-11T23:35:00.795Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: STRKUSDT long — 19.7% dari liquidasi!
+[2026-06-11T23:35:01.996Z] [MANAGER     ] RENDERUSDT LONG | price=1.6342 entry=1.6288 PnL=1.66% | hold=0.2h | BEP=no | trail=off | liqDist=19.9%
+[2026-06-11T23:35:01.997Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.9% dari liquidasi!
+[2026-06-11T23:35:02.772Z] [MANAGER     ] AEROUSDT LONG | price=0.3495 entry=0.3487 PnL=1.15% | hold=0.2h | BEP=no | trail=off | liqDist=19.8%
+[2026-06-11T23:35:02.772Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: AEROUSDT long — 19.8% dari liquidasi!
+[2026-06-11T23:35:03.493Z] [MANAGER     ] Management cycle selesai
+[2026-06-11T23:40:00.753Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:40:00.864Z] [MANAGER     ] STRKUSDT LONG | price=0.034545 entry=0.034518 PnL=0.39% | hold=0.3h | BEP=no | trail=off | liqDist=19.7%
+[2026-06-11T23:40:00.867Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: STRKUSDT long — 19.7% dari liquidasi!
+[2026-06-11T23:40:02.241Z] [MANAGER     ] RENDERUSDT LONG | price=1.6338 entry=1.6288 PnL=1.53% | hold=0.3h | BEP=no | trail=off | liqDist=19.8%
+[2026-06-11T23:40:02.242Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.8% dari liquidasi!
+[2026-06-11T23:40:03.028Z] [MANAGER     ] AEROUSDT LONG | price=0.3502 entry=0.3487 PnL=2.15% | hold=0.3h | BEP=no | trail=off | liqDist=19.9%
+[2026-06-11T23:40:03.031Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: AEROUSDT long — 19.9% dari liquidasi!
+[2026-06-11T23:40:03.797Z] [MANAGER     ] Management cycle selesai
+[2026-06-11T23:45:00.945Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:45:01.134Z] [MANAGER     ] STRKUSDT LONG | price=0.034572 entry=0.034518 PnL=0.78% | hold=0.4h | BEP=no | trail=off | liqDist=19.7%
+[2026-06-11T23:45:01.135Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: STRKUSDT long — 19.7% dari liquidasi!
+[2026-06-11T23:45:01.917Z] [MANAGER     ] RENDERUSDT LONG | price=1.635 entry=1.6288 PnL=1.90% | hold=0.4h | BEP=no | trail=off | liqDist=19.9%
+[2026-06-11T23:45:01.918Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.9% dari liquidasi!
+[2026-06-11T23:45:03.124Z] [MANAGER     ] AEROUSDT LONG | price=0.3559 entry=0.3487 PnL=10.32% | hold=0.4h | BEP=no | trail=off | liqDist=21.2%
+[2026-06-11T23:45:03.125Z] [MANAGER     ] 🔻 Trailing aktif early: AEROUSDT long | PnL=10.32% >= 3%
+[2026-06-11T23:45:03.127Z] [STATE       ] 🔻 Trailing aktif: AEROUSDT long
+[2026-06-11T23:45:03.129Z] [MANAGER     ]   Trail: peak=0.3559 drop=0.00% | trigger at 2%
+[2026-06-11T23:45:03.430Z] [MANAGER     ] Management cycle selesai
+[2026-06-11T23:50:00.116Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:50:00.221Z] [MANAGER     ] STRKUSDT LONG | price=0.03454 entry=0.034518 PnL=0.32% | hold=0.5h | BEP=no | trail=off | liqDist=19.7%
+[2026-06-11T23:50:00.223Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: STRKUSDT long — 19.7% dari liquidasi!
+[2026-06-11T23:50:01.572Z] [MANAGER     ] RENDERUSDT LONG | price=1.6332 entry=1.6288 PnL=1.35% | hold=0.5h | BEP=no | trail=off | liqDist=19.8%
+[2026-06-11T23:50:01.575Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.8% dari liquidasi!
+[2026-06-11T23:50:02.385Z] [MANAGER     ] AEROUSDT LONG | price=0.355 entry=0.3487 PnL=9.03% | hold=0.4h | BEP=no | trail=ON | liqDist=21.0%
+[2026-06-11T23:50:02.386Z] [MANAGER     ]   Trail: peak=0.3559 drop=0.25% | trigger at 2%
+[2026-06-11T23:50:02.690Z] [MANAGER     ] Management cycle selesai
+[2026-06-11T23:55:00.287Z] [MANAGER     ] Mengevaluasi 3 posisi futures...
+[2026-06-11T23:55:00.476Z] [MANAGER     ] STRKUSDT LONG | price=0.034492 entry=0.034518 PnL=-0.38% | hold=0.6h | BEP=no | trail=off | liqDist=19.5%
+[2026-06-11T23:55:00.477Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: STRKUSDT long — 19.5% dari liquidasi!
+[2026-06-11T23:55:01.869Z] [MANAGER     ] RENDERUSDT LONG | price=1.6321 entry=1.6288 PnL=1.01% | hold=0.6h | BEP=no | trail=off | liqDist=19.8%
+[2026-06-11T23:55:01.870Z] [MANAGER     ] ⚠️  LIQUIDATION WARNING: RENDERUSDT long — 19.8% dari liquidasi!
+[2026-06-11T23:55:02.658Z] [MANAGER     ] AEROUSDT LONG | price=0.3596 entry=0.3487 PnL=15.63% | hold=0.5h | BEP=no | trail=ON | liqDist=22.0%
+[2026-06-11T23:55:02.660Z] [MANAGER     ] 🎯 TP1 hit: AEROUSDT long | price=0.3596 TP1=0.359161 | Tutup 50%, set BEP
+[2026-06-11T23:55:02.769Z] [EXECUTOR    ] 🔒 PARTIAL CLOSE LONG: AEROUSDT 50% (71.6948) @ 0.3596
+[2026-06-11T23:55:02.777Z] [TRADE       ] 🔒 CLOSE LONG AEROUSDT | qty=71.6948 | price=0.3596 | reason=partial-tp1_partial
+[2026-06-11T23:55:02.788Z] [STATE       ] ✅ BEP set: AEROUSDT long
+[2026-06-11T23:55:03.179Z] [MANAGER     ] ✅ TP1 done, BEP set, trailing aktif: AEROUSDT long
+[2026-06-11T23:55:03.482Z] [MANAGER     ] Management cycle selesai
