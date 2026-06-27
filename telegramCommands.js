@@ -101,7 +101,7 @@ async function handleCommand(chatId, text, callbacks) {
   const parts = text.trim().split(/\s+/);
   const cmd   = parts[0].toLowerCase();
   const arg1  = parts[1]?.toUpperCase(); // symbol
-  const arg2  = parts[2]?.toLowerCase(); // side (long/short)
+  const arg2  = parts[2]?.toLowerCase(); // side (long/short) atau angka
 
   log('telegram', `Cmd: ${cmd}${arg1 ? ' ' + arg1 : ''}${arg2 ? ' ' + arg2 : ''}`);
 
@@ -138,22 +138,6 @@ async function handleCommand(chatId, text, callbacks) {
     }
 
     // ── Screener ──────────────────────────────────────────────────────────────
-    case '/long': {
-      await reply(chatId, '🔍 Menjalankan Long screener...');
-      callbacks.doLongScreening?.()
-        .then(c => { if (!c?.length) reply(chatId, '⚠️ Tidak ada kandidat LONG.'); })
-        .catch(e => reply(chatId, `⚠️ Error: ${e.message}`));
-      break;
-    }
-
-    case '/short': {
-      await reply(chatId, '🔍 Menjalankan Short screener...');
-      callbacks.doShortScreening?.()
-        .then(c => { if (!c?.length) reply(chatId, '⚠️ Tidak ada kandidat SHORT.'); })
-        .catch(e => reply(chatId, `⚠️ Error: ${e.message}`));
-      break;
-    }
-
     case '/screen': {
       await reply(chatId, '🔍 Menjalankan Long + Short screener...');
       callbacks.doScreening?.().catch(e => reply(chatId, `⚠️ Error: ${e.message}`));
@@ -162,7 +146,6 @@ async function handleCommand(chatId, text, callbacks) {
 
     // ── Approval (Manual Mode) ─────────────────────────────────────────────
     case '/approve': {
-      // /approve BTCUSDT long
       if (!arg1 || !arg2) { await reply(chatId, '❓ Format: /approve SYMBOL long|short'); break; }
       if (!['long', 'short'].includes(arg2)) { await reply(chatId, '❓ Side harus "long" atau "short"'); break; }
       await reply(chatId, `⏳ Mengeksekusi ${arg2.toUpperCase()} ${arg1}...`);
@@ -178,7 +161,6 @@ async function handleCommand(chatId, text, callbacks) {
     }
 
     case '/skip': {
-      // /skip BTCUSDT long
       if (!arg1 || !arg2) { await reply(chatId, '❓ Format: /skip SYMBOL long|short'); break; }
       const result = callbacks.doSkip?.(arg1, arg2);
       await reply(chatId, result?.ok ? `⏭ ${arg1} ${arg2} diskip.` : `❌ ${result?.reason}`);
@@ -203,25 +185,128 @@ async function handleCommand(chatId, text, callbacks) {
     }
 
     // ── Manual Trade ──────────────────────────────────────────────────────────
+    // Format: /long SYMBOL [entry] [sl] [tp]
+    // Contoh:
+    //   /long BTCUSDT                      → market, SL/TP auto
+    //   /long BTCUSDT 94000                → market, SL custom
+    //   /long BTCUSDT 94000 97000          → market, SL custom, TP custom
+    //   /long BTCUSDT 95000 94000 97000    → entry+SL+TP semua custom
+    case '/long':
     case '/buylong': {
-      if (!arg1) { await reply(chatId, '❓ Format: /buylong SYMBOL\nContoh: /buylong BTCUSDT'); break; }
-      await reply(chatId, `⏳ Open LONG <b>${arg1}</b>...`);
+      if (!arg1) {
+        await reply(chatId,
+          '❓ <b>Format /long:</b>\n\n' +
+          '<code>/long SYMBOL</code>\n' +
+          '  → market entry, SL/TP dari config\n\n' +
+          '<code>/long SYMBOL SL</code>\n' +
+          '  → market entry, SL custom\n\n' +
+          '<code>/long SYMBOL SL TP</code>\n' +
+          '  → market entry, SL+TP custom\n\n' +
+          '<code>/long SYMBOL ENTRY SL TP</code>\n' +
+          '  → entry+SL+TP semua custom\n\n' +
+          '📌 Contoh:\n' +
+          '<code>/long BTCUSDT</code>\n' +
+          '<code>/long BTCUSDT 94000</code>\n' +
+          '<code>/long BTCUSDT 94000 97000</code>\n' +
+          '<code>/long BTCUSDT 95000 94000 97000</code>'
+        );
+        break;
+      }
+
+      // Ambil semua angka positif dari argumen setelah SYMBOL
+      const longNums = parts.slice(2).map(Number).filter(n => !isNaN(n) && n > 0);
+      let longEntry = null, longSl = null, longTp = null;
+      if (longNums.length === 1)      { [longSl]                    = longNums; }
+      else if (longNums.length === 2) { [longSl, longTp]            = longNums; }
+      else if (longNums.length >= 3)  { [longEntry, longSl, longTp] = longNums; }
+
+      const longInfo = [
+        longEntry ? `Entry: ${longEntry}` : 'Entry: market',
+        longSl    ? `SL: ${longSl}`       : 'SL: auto',
+        longTp    ? `TP: ${longTp}`       : 'TP: auto',
+      ].join(' | ');
+
+      await reply(chatId, `⏳ Open LONG <b>${arg1}</b>\n${longInfo}`);
       try {
-        const result = await callbacks.doManualLong?.(arg1);
+        const result = await callbacks.doManualLong?.(arg1, {
+          entryPrice: longEntry,
+          slPrice:    longSl,
+          tp1Price:   longTp,
+        });
         if (result?.success) {
-          await reply(chatId, `✅ LONG ${arg1} @ ${result.entryPrice} | Size: ${result.size} | Liq: ${result.liqPrice?.toFixed(6)}`);
+          const slPct  = ((result.slPrice  - result.entryPrice) / result.entryPrice * 100).toFixed(2);
+          const tp1Pct = ((result.tp1Price - result.entryPrice) / result.entryPrice * 100).toFixed(2);
+          await reply(chatId,
+            `✅ <b>LONG ${arg1}</b>\n\n` +
+            `Entry : ${result.entryPrice}\n` +
+            `SL    : ${result.slPrice?.toFixed(6)} (${slPct}%)\n` +
+            `TP1   : ${result.tp1Price?.toFixed(6)} (+${tp1Pct}%)\n` +
+            `Liq   : ${result.liqPrice?.toFixed(6)}\n` +
+            `Size  : ${result.size}`
+          );
         } else { await reply(chatId, `❌ Gagal: ${result?.error}`); }
       } catch (err) { await reply(chatId, `❌ Error: ${err.message}`); }
       break;
     }
 
+    // Format: /short SYMBOL [entry] [sl] [tp]
+    // Contoh:
+    //   /short BTCUSDT                     → market, SL/TP auto
+    //   /short BTCUSDT 96000               → market, SL custom
+    //   /short BTCUSDT 96000 93000         → market, SL custom, TP custom
+    //   /short BTCUSDT 95000 96000 93000   → entry+SL+TP semua custom
+    case '/short':
     case '/buyshort': {
-      if (!arg1) { await reply(chatId, '❓ Format: /buyshort SYMBOL\nContoh: /buyshort BTCUSDT'); break; }
-      await reply(chatId, `⏳ Open SHORT <b>${arg1}</b>...`);
+      if (!arg1) {
+        await reply(chatId,
+          '❓ <b>Format /short:</b>\n\n' +
+          '<code>/short SYMBOL</code>\n' +
+          '  → market entry, SL/TP dari config\n\n' +
+          '<code>/short SYMBOL SL</code>\n' +
+          '  → market entry, SL custom\n\n' +
+          '<code>/short SYMBOL SL TP</code>\n' +
+          '  → market entry, SL+TP custom\n\n' +
+          '<code>/short SYMBOL ENTRY SL TP</code>\n' +
+          '  → entry+SL+TP semua custom\n\n' +
+          '📌 Contoh:\n' +
+          '<code>/short BTCUSDT</code>\n' +
+          '<code>/short BTCUSDT 96000</code>\n' +
+          '<code>/short BTCUSDT 96000 93000</code>\n' +
+          '<code>/short BTCUSDT 95000 96000 93000</code>'
+        );
+        break;
+      }
+
+      const shortNums = parts.slice(2).map(Number).filter(n => !isNaN(n) && n > 0);
+      let shortEntry = null, shortSl = null, shortTp = null;
+      if (shortNums.length === 1)      { [shortSl]                       = shortNums; }
+      else if (shortNums.length === 2) { [shortSl, shortTp]              = shortNums; }
+      else if (shortNums.length >= 3)  { [shortEntry, shortSl, shortTp]  = shortNums; }
+
+      const shortInfo = [
+        shortEntry ? `Entry: ${shortEntry}` : 'Entry: market',
+        shortSl    ? `SL: ${shortSl}`       : 'SL: auto',
+        shortTp    ? `TP: ${shortTp}`       : 'TP: auto',
+      ].join(' | ');
+
+      await reply(chatId, `⏳ Open SHORT <b>${arg1}</b>\n${shortInfo}`);
       try {
-        const result = await callbacks.doManualShort?.(arg1);
+        const result = await callbacks.doManualShort?.(arg1, {
+          entryPrice: shortEntry,
+          slPrice:    shortSl,
+          tp1Price:   shortTp,
+        });
         if (result?.success) {
-          await reply(chatId, `✅ SHORT ${arg1} @ ${result.entryPrice} | Size: ${result.size} | Liq: ${result.liqPrice?.toFixed(6)}`);
+          const slPct  = ((result.entryPrice - result.slPrice)  / result.entryPrice * 100).toFixed(2);
+          const tp1Pct = ((result.entryPrice - result.tp1Price) / result.entryPrice * 100).toFixed(2);
+          await reply(chatId,
+            `✅ <b>SHORT ${arg1}</b>\n\n` +
+            `Entry : ${result.entryPrice}\n` +
+            `SL    : ${result.slPrice?.toFixed(6)} (+${slPct}%)\n` +
+            `TP1   : ${result.tp1Price?.toFixed(6)} (-${tp1Pct}%)\n` +
+            `Liq   : ${result.liqPrice?.toFixed(6)}\n` +
+            `Size  : ${result.size}`
+          );
         } else { await reply(chatId, `❌ Gagal: ${result?.error}`); }
       } catch (err) { await reply(chatId, `❌ Error: ${err.message}`); }
       break;
@@ -294,31 +379,25 @@ async function handleCommand(chatId, text, callbacks) {
       const isAuto = config.trading.autoExecute !== false;
       await reply(chatId,
         `🤖 <b>Futures Bot v1.0</b> — ${isAuto ? '⚡ AUTO' : '📋 MANUAL'}\n\n` +
-        `<b>⚙️ Mode:</b>\n` +
-        `/mode            — lihat mode saat ini\n` +
-        `/auto            — switch ke auto-execute\n` +
-        `/manual          — switch ke manual approval\n\n` +
-        `<b>📡 Screening:</b>\n` +
-        `/long            — scan kandidat LONG\n` +
-        `/short           — scan kandidat SHORT\n` +
-        `/screen          — Long + Short sekaligus\n\n` +
-        `<b>✅ Approval (mode manual):</b>\n` +
-        `/pending                — lihat antrian\n` +
-        `/approve SYMBOL long    — approve LONG\n` +
-        `/approve SYMBOL short   — approve SHORT\n` +
-        `/skip SYMBOL long       — skip LONG\n` +
-        `/skip SYMBOL short      — skip SHORT\n\n` +
         `<b>💰 Manual Trade:</b>\n` +
-        `/buylong SYMBOL  — open LONG manual\n` +
-        `/buyshort SYMBOL — open SHORT manual\n` +
-        `/close SYMBOL long  — tutup LONG\n` +
-        `/close SYMBOL short — tutup SHORT\n` +
-        `/closeall           — tutup semua\n\n` +
+        `<code>/long SYMBOL</code>               — LONG market\n` +
+        `<code>/long SYMBOL SL</code>            — LONG, SL custom\n` +
+        `<code>/long SYMBOL SL TP</code>         — LONG, SL+TP custom\n` +
+        `<code>/long SYMBOL ENTRY SL TP</code>   — LONG semua custom\n\n` +
+        `<code>/short SYMBOL</code>              — SHORT market\n` +
+        `<code>/short SYMBOL SL</code>           — SHORT, SL custom\n` +
+        `<code>/short SYMBOL SL TP</code>        — SHORT, SL+TP custom\n` +
+        `<code>/short SYMBOL ENTRY SL TP</code>  — SHORT semua custom\n\n` +
+        `<code>/close SYMBOL long|short</code>   — tutup posisi\n` +
+        `<code>/closeall</code>                  — tutup semua\n\n` +
+        `<b>⚙️ Mode:</b>\n` +
+        `/mode — lihat mode | /auto — AUTO | /manual — MANUAL\n\n` +
+        `<b>📡 Screening:</b>\n` +
+        `/screen — Long + Short scan\n\n` +
+        `<b>✅ Approval (mode manual):</b>\n` +
+        `/pending | /approve SYMBOL long|short | /skip SYMBOL long|short\n\n` +
         `<b>📊 Monitor:</b>\n` +
-        `/status          — posisi + PnL\n` +
-        `/manage          — cek TP/SL/trailing\n` +
-        `/stats           — total statistik\n` +
-        `/stop            — hentikan bot`
+        `/status | /manage | /stats | /stop`
       );
       break;
     }
