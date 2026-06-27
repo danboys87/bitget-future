@@ -1,6 +1,0 @@
-{"ts":"2026-06-12T00:51:08.472Z","side":"open_long","symbol":"XPLUSDT","qty":657.2893,"price":0.07607,"reason":"manual"}
-{"ts":"2026-06-12T01:13:06.569Z","side":"close_long","symbol":"AEROUSDT","qty":71.6949,"price":0.3536,"reason":"trailing_stop"}
-{"ts":"2026-06-12T01:24:00.712Z","side":"close_long","symbol":"STRKUSDT","qty":1448.5196,"price":0.033478,"reason":"stop_loss"}
-{"ts":"2026-06-12T02:06:01.632Z","side":"close_long","symbol":"XPLUSDT","qty":328.6446,"price":0.0787,"reason":"partial-tp1_partial"}
-{"ts":"2026-06-12T02:20:49.779Z","side":"open_long","symbol":"PYTHUSDT","qty":1304.121,"price":0.03834,"reason":"manual"}
-{"ts":"2026-06-12T02:54:01.250Z","side":"close_long","symbol":"XPLUSDT","qty":328.6447,"price":0.07826,"reason":"trailing_stop"}
