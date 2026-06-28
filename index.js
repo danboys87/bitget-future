@@ -210,6 +210,7 @@ export async function doManualLong(symbol, opts = {}) {
     strategy:  'manual',
     signals:   {},
     change24h: 0,
+    entryPrice: opts.entryPrice || null,
     slPrice:   opts.slPrice  || null,  // custom SL dari user
     tp1Price:  opts.tp1Price || null,  // custom TP dari user
   };
@@ -239,6 +240,7 @@ export async function doManualShort(symbol, opts = {}) {
     strategy:  'manual',
     signals:   {},
     change24h: 0,
+    entryPrice: opts.entryPrice || null,
     slPrice:   opts.slPrice  || null,  // custom SL dari user
     tp1Price:  opts.tp1Price || null,  // custom TP dari user
   };
