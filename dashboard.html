@@ -7,23 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#f5f4f0;--surface:#fff;--border:#e2e0d8;--border2:#ccc9bc;
-  --text:#1a1916;--muted:#7a7568;--accent:#1a1916;
-  --green:#1a7a4a;--green-bg:#edf7f1;
-  --red:#c0392b;--red-bg:#fdf0ee;
-  --yellow:#b07d20;--yellow-bg:#fdf6e3;
-  --blue:#1a4a7a;--blue-bg:#edf2f7;
-  --orange:#c45c00;--orange-bg:#fef3e8;
-  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
-  --radius:6px;--shadow:0 1px 3px rgba(0,0,0,.07);
-}
+:root{--bg:#f5f4f0;--surface:#fff;--border:#e2e0d8;--border2:#ccc9bc;--text:#1a1916;--muted:#7a7568;--accent:#1a1916;--green:#1a7a4a;--green-bg:#edf7f1;--red:#c0392b;--red-bg:#fdf0ee;--yellow:#b07d20;--yellow-bg:#fdf6e3;--blue:#1a4a7a;--blue-bg:#edf2f7;--orange:#c45c00;--orange-bg:#fef3e8;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--radius:6px;--shadow:0 1px 3px rgba(0,0,0,.07);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;min-height:100vh;}
 .app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
-
-/* Topbar */
-.topbar{display:flex;align-items:center;gap:12px;padding:0 16px;height:48px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:nowrap;}
+.topbar{display:flex;align-items:center;gap:12px;padding:0 16px;height:48px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .topbar-logo{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .topbar-logo span{opacity:.4;}
 .topbar-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;}
@@ -32,31 +20,19 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .dot.live{background:var(--green);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-
-/* Mode toggle button */
-.mode-btn{
-  display:flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:11px;font-weight:600;
-  padding:4px 10px;border-radius:20px;border:none;cursor:pointer;
-  transition:all .2s;white-space:nowrap;
-}
+.mode-btn{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .mode-btn.auto{background:#dcfce7;color:var(--green);}
 .mode-btn.auto:hover{background:#bbf7d0;}
 .mode-btn.manual{background:#fef3c7;color:var(--yellow);}
 .mode-btn.manual:hover{background:#fde68a;}
-
 .api-input{font-family:var(--mono);font-size:11px;border:1px solid var(--border);border-radius:var(--radius);padding:4px 8px;background:var(--bg);color:var(--text);width:200px;outline:none;}
-.api-input:focus{border-color:var(--accent);}
 .btn{font-family:var(--sans);font-size:12px;font-weight:500;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .btn:hover{background:var(--bg);}
 .btn.primary{background:var(--text);color:#fff;border-color:var(--text);}
-.btn.primary:hover{opacity:.85;}
 .btn.success{background:var(--green);color:#fff;border-color:var(--green);}
 .btn.danger{background:var(--red);color:#fff;border-color:var(--red);}
-.btn.warning{background:var(--orange);color:#fff;border-color:var(--orange);}
 .btn.sm{padding:3px 8px;font-size:11px;}
 .btn:disabled{opacity:.4;cursor:not-allowed;}
-
 .body{display:flex;flex:1;overflow:hidden;}
 .sidenav{width:180px;flex-shrink:0;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;padding:12px 0;}
 .nav-item{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);border-left:2px solid transparent;transition:all .12s;user-select:none;}
@@ -67,12 +43,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
 .panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
-.panel-title{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.panel-title{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
 .panel-actions{display:flex;gap:6px;}
 .stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);}
 .stat-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.stat-value{font-family:var(--mono);font-size:20px;font-weight:500;line-height:1;color:var(--text);}
+.stat-value{font-family:var(--mono);font-size:20px;font-weight:500;line-height:1;}
 .stat-value.green{color:var(--green);}
 .stat-value.red{color:var(--red);}
 .stat-value.orange{color:var(--orange);}
@@ -90,13 +66,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .badge.orange{background:var(--orange-bg);color:var(--orange);}
 .badge.gray{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
 .log-box{font-family:var(--mono);font-size:11px;line-height:1.6;background:#1a1916;color:#c8c4b8;padding:14px;border-radius:var(--radius);overflow-y:auto;height:340px;white-space:pre-wrap;word-break:break-all;}
-.log-box .log-err{color:#e87474;}
-.log-box .log-warn{color:#e8c274;}
-.log-box .log-ok{color:#74e89a;}
+.log-err{color:#e87474;}
+.log-warn{color:#e8c274;}
+.log-ok{color:#74e89a;}
 .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;}
 .field{display:flex;flex-direction:column;gap:5px;}
 .field label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-.field input,.field select{font-family:var(--mono);font-size:13px;border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;background:var(--bg);color:var(--text);outline:none;transition:border-color .15s;}
+.field input,.field select{font-family:var(--mono);font-size:13px;border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;background:var(--bg);color:var(--text);outline:none;}
 .field input:focus,.field select:focus{border-color:var(--accent);}
 .empty{padding:40px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);}
 .toast-area{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:999;}
@@ -110,18 +86,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .page.active{display:flex;flex-direction:column;gap:16px;}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Pending card */
 .pending-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);overflow:hidden;margin-bottom:10px;}
 .pending-card-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);}
 .pending-card-body{padding:14px 16px;}
 .pending-card-actions{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:6px;}
+.hint-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:2;}
+.price-preview{background:var(--bg);border-radius:var(--radius);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9;min-height:78px;}
 </style>
 </head>
 <body>
 <div class="app">
-
-<!-- ── Topbar ─────────────────────────────────────────────────────────────── -->
 <header class="topbar">
   <div class="topbar-logo"><span>▣</span> FUTURES BOT <span>/ USDT-M</span></div>
   <div class="topbar-sep"></div>
@@ -131,12 +105,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <div class="topbar-sep"></div>
   <div class="topbar-status">Lev: <b id="levLabel">—</b> | <span id="marginLabel">—</span></div>
   <div class="topbar-sep"></div>
-
-  <!-- Mode Toggle Button -->
-  <button class="mode-btn auto" id="modeToggleBtn" onclick="toggleMode()" title="Klik untuk ganti mode">
-    <span id="modeIcon">⚡</span> <span id="modeTxt">AUTO</span>
-  </button>
-
+  <button class="mode-btn auto" id="modeToggleBtn" onclick="toggleMode()"><span id="modeIcon">⚡</span> <span id="modeTxt">AUTO</span></button>
   <div class="topbar-right">
     <input class="api-input" id="apiUrl" placeholder="http://localhost:3001" value="http://localhost:3001">
     <button class="btn primary" onclick="connect()">Connect</button>
@@ -144,9 +113,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
     <span style="font-family:var(--mono);font-size:11px;color:var(--muted)" id="lastUpdate"></span>
   </div>
 </header>
-
 <div class="body">
-<!-- ── Sidenav ─────────────────────────────────────────────────────────────── -->
 <nav class="sidenav">
   <div class="nav-section">Monitor</div>
   <div class="nav-item active" onclick="showPage('overview')"><span class="nav-icon">◈</span> Overview</div>
@@ -161,42 +128,30 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <div class="nav-section">Settings</div>
   <div class="nav-item" onclick="showPage('config')"><span class="nav-icon">⚙</span> Config</div>
 </nav>
-
-<!-- ── Content ─────────────────────────────────────────────────────────────── -->
 <main class="content">
 
-<!-- PAGE: OVERVIEW -->
+<!-- OVERVIEW -->
 <div class="page active" id="page-overview">
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Total PnL</div><div class="stat-value" id="st-pnl">—</div><div class="stat-sub" id="st-pnl-sub"></div></div>
     <div class="stat-card"><div class="stat-label">Open Positions</div><div class="stat-value" id="st-open">—</div><div class="stat-sub" id="st-open-sub">— Long | — Short</div></div>
-    <div class="stat-card"><div class="stat-label">Pending Approval</div><div class="stat-value" id="st-pending">—</div><div class="stat-sub">awaiting action</div></div>
-    <div class="stat-card"><div class="stat-label">Closed Trades</div><div class="stat-value" id="st-closed">—</div><div class="stat-sub">all time</div></div>
+    <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value" id="st-pending">—</div><div class="stat-sub">awaiting action</div></div>
+    <div class="stat-card"><div class="stat-label">Closed</div><div class="stat-value" id="st-closed">—</div><div class="stat-sub">all time</div></div>
     <div class="stat-card"><div class="stat-label">Budget / Trade</div><div class="stat-value" id="st-budget">—</div><div class="stat-sub" id="st-exposure">exposure: —</div></div>
-    <div class="stat-card"><div class="stat-label">Nearest Liq</div><div class="stat-value" id="st-liq">—</div><div class="stat-sub">dist from liquidation</div></div>
+    <div class="stat-card"><div class="stat-label">Nearest Liq</div><div class="stat-value" id="st-liq">—</div><div class="stat-sub">dist from liq</div></div>
   </div>
-
-  <!-- Open Positions -->
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title">◎ Open Positions</div>
-      <div class="panel-actions">
-        <button class="btn sm danger" onclick="closeAll()">Close All</button>
-        <button class="btn sm" onclick="showPage('positions')">View All →</button>
-      </div>
+      <div class="panel-actions"><button class="btn sm danger" onclick="closeAll()">Close All</button><button class="btn sm" onclick="showPage('positions')">View All →</button></div>
     </div>
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Side</th><th>Entry</th><th>Current</th><th>PnL %</th><th>PnL USDT</th><th>Liq Dist</th><th>Status</th><th>Hold</th><th>Action</th></tr></thead>
       <tbody id="ov-pos-body"><tr><td colspan="10" class="empty">Tidak ada posisi terbuka</td></tr></tbody>
     </table>
   </div>
-
-  <!-- Pending Queue mini -->
   <div class="panel" id="pending-panel-mini" style="display:none">
-    <div class="panel-header">
-      <div class="panel-title">◷ Pending Approval</div>
-      <div class="panel-actions"><button class="btn sm" onclick="showPage('pending')">View All →</button></div>
-    </div>
+    <div class="panel-header"><div class="panel-title">◷ Pending Approval</div><div class="panel-actions"><button class="btn sm" onclick="showPage('pending')">View All →</button></div></div>
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Side</th><th>Price</th><th>Change</th><th>SL Ref</th><th>Sisa</th><th>Action</th></tr></thead>
       <tbody id="ov-pending-body"></tbody>
@@ -204,13 +159,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   </div>
 </div>
 
-<!-- PAGE: POSITIONS -->
+<!-- POSITIONS -->
 <div class="page" id="page-positions">
   <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">◎ Open Positions — Detail</div>
-      <div class="panel-actions"><button class="btn sm" onclick="refreshAll()">↻ Refresh</button></div>
-    </div>
+    <div class="panel-header"><div class="panel-title">◎ Positions Detail</div><div class="panel-actions"><button class="btn sm" onclick="refreshAll()">↻ Refresh</button></div></div>
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Side</th><th>Lev</th><th>Entry</th><th>Current</th><th>PnL %</th><th>PnL USDT</th><th>SL</th><th>Liq Price</th><th>Liq Dist</th><th>Status</th><th>Opened</th><th>Action</th></tr></thead>
       <tbody id="pos-body"><tr><td colspan="13" class="empty">Tidak ada posisi terbuka</td></tr></tbody>
@@ -218,200 +170,166 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   </div>
 </div>
 
-<!-- PAGE: PENDING -->
+<!-- PENDING -->
 <div class="page" id="page-pending">
   <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">◷ Pending Approval Queue</div>
-      <div class="panel-actions"><button class="btn sm" onclick="refreshAll()">↻ Refresh</button></div>
-    </div>
-    <div id="pending-cards" style="padding:16px">
-      <div class="empty">Tidak ada kandidat pending</div>
-    </div>
+    <div class="panel-header"><div class="panel-title">◷ Pending Queue</div><div class="panel-actions"><button class="btn sm" onclick="refreshAll()">↻ Refresh</button></div></div>
+    <div id="pending-cards" style="padding:16px"><div class="empty">Tidak ada kandidat pending</div></div>
   </div>
 </div>
 
-<!-- PAGE: MANUAL TRADE -->
+<!-- MANUAL TRADE -->
 <div class="page" id="page-trade">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
 
-    <!-- Open Long -->
+  <!-- Format hint card -->
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">📖 Format — Berlaku untuk semua coin di Bitget Futures</div></div>
+    <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="hint-box">
+        <b style="color:var(--green)">📈 /long SYMBOL [args]</b><br>
+        <code>/long ETHUSDT</code> — market, SL/TP auto<br>
+        <code>/long SOLUSDT 138</code> — market, SL=138<br>
+        <code>/long SOLUSDT 138 145</code> — market, SL+TP<br>
+        <code>/long SOLUSDT 140 138 145</code> — entry+SL+TP
+      </div>
+      <div class="hint-box">
+        <b style="color:var(--red)">📉 /short SYMBOL [args]</b><br>
+        <code>/short XRPUSDT</code> — market, SL/TP auto<br>
+        <code>/short XRPUSDT 0.54</code> — market, SL=0.54<br>
+        <code>/short XRPUSDT 0.54 0.49</code> — market, SL+TP<br>
+        <code>/short XRPUSDT 0.52 0.54 0.49</code> — entry+SL+TP
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <!-- LONG form -->
     <div class="panel">
-      <div class="panel-header"><div class="panel-title" style="color:var(--green)">📈 Open Long Manual</div></div>
-      <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+      <div class="panel-header"><div class="panel-title" style="color:var(--green)">📈 Open Long</div></div>
+      <div style="padding:18px;display:flex;flex-direction:column;gap:12px">
         <div class="field">
-          <label>Symbol</label>
-          <input id="long-symbol" placeholder="BTCUSDT" style="text-transform:uppercase" oninput="previewPrice('long')">
+          <label>Symbol (semua coin Bitget Futures)</label>
+          <input id="long-symbol" placeholder="BTCUSDT / ETHUSDT / SOLUSDT / ..." style="text-transform:uppercase" oninput="previewPrice('long')">
         </div>
-        <div id="long-preview" style="background:var(--bg);border-radius:var(--radius);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.8">
-          Ketik symbol untuk preview...
+        <div id="long-preview" class="price-preview">Ketik symbol untuk preview harga...</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div class="field"><label>Entry <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-entry" type="number" step="any" placeholder="market"></div>
+          <div class="field"><label>SL <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-sl" type="number" step="any" placeholder="auto"></div>
+          <div class="field"><label>TP1 <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-tp" type="number" step="any" placeholder="auto"></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="field">
-            <label>SL Price <span style="color:var(--muted);font-weight:400;text-transform:none">(opsional)</span></label>
-            <input id="long-sl" type="number" step="any" placeholder="auto dari config">
-          </div>
-          <div class="field">
-            <label>TP1 Price <span style="color:var(--muted);font-weight:400;text-transform:none">(opsional)</span></label>
-            <input id="long-tp" type="number" step="any" placeholder="auto dari config">
-          </div>
-        </div>
-        <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">💡 Kosongkan = pakai % dari config</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">SL Long harus di bawah harga entry</div>
         <button class="btn success" style="width:100%" onclick="doManualOpen('long')">📈 Open LONG</button>
       </div>
     </div>
-
-    <!-- Open Short -->
+    <!-- SHORT form -->
     <div class="panel">
-      <div class="panel-header"><div class="panel-title" style="color:var(--red)">📉 Open Short Manual</div></div>
-      <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+      <div class="panel-header"><div class="panel-title" style="color:var(--red)">📉 Open Short</div></div>
+      <div style="padding:18px;display:flex;flex-direction:column;gap:12px">
         <div class="field">
-          <label>Symbol</label>
-          <input id="short-symbol" placeholder="BTCUSDT" style="text-transform:uppercase" oninput="previewPrice('short')">
+          <label>Symbol (semua coin Bitget Futures)</label>
+          <input id="short-symbol" placeholder="BTCUSDT / ETHUSDT / XRPUSDT / ..." style="text-transform:uppercase" oninput="previewPrice('short')">
         </div>
-        <div id="short-preview" style="background:var(--bg);border-radius:var(--radius);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.8">
-          Ketik symbol untuk preview...
+        <div id="short-preview" class="price-preview">Ketik symbol untuk preview harga...</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div class="field"><label>Entry <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-entry" type="number" step="any" placeholder="market"></div>
+          <div class="field"><label>SL <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-sl" type="number" step="any" placeholder="auto"></div>
+          <div class="field"><label>TP1 <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-tp" type="number" step="any" placeholder="auto"></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="field">
-            <label>SL Price <span style="color:var(--muted);font-weight:400;text-transform:none">(opsional)</span></label>
-            <input id="short-sl" type="number" step="any" placeholder="auto dari config">
-          </div>
-          <div class="field">
-            <label>TP1 Price <span style="color:var(--muted);font-weight:400;text-transform:none">(opsional)</span></label>
-            <input id="short-tp" type="number" step="any" placeholder="auto dari config">
-          </div>
-        </div>
-        <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">💡 Kosongkan = pakai % dari config</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">SL Short harus di atas harga entry</div>
         <button class="btn danger" style="width:100%" onclick="doManualOpen('short')">📉 Open SHORT</button>
       </div>
     </div>
-
   </div>
 
-  <!-- Close Position -->
+  <!-- Close -->
   <div class="panel">
     <div class="panel-header"><div class="panel-title">🔒 Close Position</div></div>
-    <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
       <div style="display:flex;gap:10px;align-items:flex-end">
-        <div class="field" style="flex:1">
-          <label>Symbol</label>
-          <input id="close-symbol" placeholder="BTCUSDT" style="text-transform:uppercase">
-        </div>
-        <div class="field" style="width:140px">
-          <label>Side</label>
-          <select id="close-side">
-            <option value="long">📈 Long</option>
-            <option value="short">📉 Short</option>
-          </select>
-        </div>
+        <div class="field" style="flex:1"><label>Symbol</label><input id="close-symbol" placeholder="BTCUSDT / ETHUSDT / ..." style="text-transform:uppercase"></div>
+        <div class="field" style="width:130px"><label>Side</label><select id="close-side"><option value="long">📈 Long</option><option value="short">📉 Short</option></select></div>
         <button class="btn danger" onclick="doManualClose()">Close</button>
       </div>
-      <div id="close-pos-list" style="font-family:var(--mono);font-size:11px;color:var(--muted)">
-        — Pilih dari posisi terbuka di atas —
-      </div>
+      <div id="close-pos-list" style="font-family:var(--mono);font-size:11px;color:var(--muted)">— Pilih dari posisi terbuka —</div>
     </div>
   </div>
 </div>
 
-<!-- PAGE: SCREENING -->
+<!-- SCREENING -->
 <div class="page" id="page-screen">
   <div class="panel">
     <div class="panel-header"><div class="panel-title">⊙ Signal Scanner</div></div>
     <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
-
-      <!-- Mode info banner -->
       <div id="mode-banner" style="padding:12px 16px;border-radius:var(--radius);border:1px solid;font-size:12px;font-weight:500;"></div>
-
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div class="panel" style="padding:20px;text-align:center">
           <div style="font-size:28px;margin-bottom:10px">📈</div>
-          <div style="font-weight:600;margin-bottom:6px;font-size:13px">Long Screener</div>
-          <div style="color:var(--muted);font-size:11px;margin-bottom:6px;line-height:1.6">Gainer ≥5–20% · Vol ≥$10M<br>→ UTBot BUY 1H · EMA21 bullish</div>
+          <div style="font-weight:600;margin-bottom:6px">Long Screener</div>
+          <div style="color:var(--muted);font-size:11px;margin-bottom:10px">Gainer 5-20% · UTBot BUY 1H</div>
           <button class="btn success" style="width:100%" onclick="doScreen('long')">▶ Run Long</button>
         </div>
         <div class="panel" style="padding:20px;text-align:center">
           <div style="font-size:28px;margin-bottom:10px">📉</div>
-          <div style="font-weight:600;margin-bottom:6px;font-size:13px">Short Screener</div>
-          <div style="color:var(--muted);font-size:11px;margin-bottom:6px;line-height:1.6">Losers ≥3% turun · Vol ≥$10M<br>→ UTBot SELL 1H · EMA21 bearish</div>
+          <div style="font-weight:600;margin-bottom:6px">Short Screener</div>
+          <div style="color:var(--muted);font-size:11px;margin-bottom:10px">Losers 3-20% · UTBot SELL 1H</div>
           <button class="btn danger" style="width:100%" onclick="doScreen('short')">▶ Run Short</button>
         </div>
       </div>
-
       <div class="panel" style="padding:14px;display:flex;align-items:center;gap:12px">
-        <button class="btn primary" onclick="doScreen('both')">⊙ Run Long + Short</button>
+        <button class="btn primary" onclick="doScreen('both')">⊙ Long + Short</button>
         <div style="width:1px;height:20px;background:var(--border)"></div>
         <button class="btn" onclick="doManage()">⚙ Management Cycle</button>
-        <span style="color:var(--muted);font-size:11px">Evaluasi TP/SL/trailing semua posisi</span>
       </div>
-
-      <div id="screen-log" style="display:none" class="log-box" style="height:200px"></div>
     </div>
   </div>
 </div>
 
-<!-- PAGE: HISTORY -->
+<!-- HISTORY -->
 <div class="page" id="page-history">
   <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">≡ Trade History</div>
-      <div class="panel-actions"><button class="btn sm" onclick="loadHistory()">↻ Refresh</button></div>
-    </div>
+    <div class="panel-header"><div class="panel-title">≡ Trade History</div><div class="panel-actions"><button class="btn sm" onclick="loadHistory()">↻ Refresh</button></div></div>
     <table class="tbl">
       <thead><tr><th>Time</th><th>Action</th><th>Symbol</th><th>Price</th><th>Qty</th><th>Reason</th></tr></thead>
-      <tbody id="history-body"><tr><td colspan="6" class="empty">Load history...</td></tr></tbody>
+      <tbody id="history-body"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
     </table>
   </div>
 </div>
 
-<!-- PAGE: LOGS -->
+<!-- LOGS -->
 <div class="page" id="page-logs">
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title">⊟ Bot Logs</div>
-      <div class="panel-actions">
-        <button class="btn sm" onclick="loadLogs()">↻ Refresh</button>
-        <button class="btn sm" onclick="toggleAutoLog()" id="autoLogBtn">Auto: ON</button>
-      </div>
+      <div class="panel-actions"><button class="btn sm" onclick="loadLogs()">↻</button><button class="btn sm" onclick="toggleAutoLog()" id="autoLogBtn">Auto: ON</button></div>
     </div>
     <div style="padding:12px"><div class="log-box" id="log-box">Connecting...</div></div>
   </div>
 </div>
 
-<!-- PAGE: CONFIG -->
+<!-- CONFIG -->
 <div class="page" id="page-config">
-
-  <!-- Mode switch di config page -->
   <div class="panel">
     <div class="panel-header"><div class="panel-title">⚡ Execute Mode</div></div>
-    <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+    <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div id="card-auto" onclick="setMode(true)" style="border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .15s;text-align:center">
+        <div id="card-auto" onclick="setMode(true)" style="border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:center">
           <div style="font-size:24px;margin-bottom:8px">⚡</div>
           <div style="font-weight:600;font-size:13px;margin-bottom:4px">Auto Execute</div>
-          <div style="color:var(--muted);font-size:11px">Signal langsung dieksekusi otomatis tanpa konfirmasi</div>
+          <div style="color:var(--muted);font-size:11px">Signal langsung dieksekusi otomatis</div>
         </div>
-        <div id="card-manual" onclick="setMode(false)" style="border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .15s;text-align:center">
+        <div id="card-manual" onclick="setMode(false)" style="border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:center">
           <div style="font-size:24px;margin-bottom:8px">📋</div>
           <div style="font-weight:600;font-size:13px;margin-bottom:4px">Manual Approval</div>
-          <div style="color:var(--muted);font-size:11px">Notif Telegram, approve via /approve SYMBOL long|short</div>
+          <div style="color:var(--muted);font-size:11px">Konfirmasi via Telegram</div>
         </div>
       </div>
-      <div style="font-family:var(--mono);font-size:11px;color:var(--muted)">
-        Mode saat ini: <span id="current-mode-label" style="font-weight:600">—</span> &nbsp;|&nbsp;
-        Approval timeout: <span id="timeout-label">—</span> menit
-      </div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--muted)">Mode: <span id="current-mode-label" style="font-weight:600">—</span> | Timeout: <span id="timeout-label">—</span>m</div>
     </div>
   </div>
-
-  <!-- Config fields -->
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title">⚙ Configuration</div>
-      <div class="panel-actions">
-        <button class="btn sm" onclick="loadConfig()">↻ Reload</button>
-        <button class="btn primary" onclick="saveConfig()">Save Config</button>
-      </div>
+      <div class="panel-actions"><button class="btn sm" onclick="loadConfig()">↻</button><button class="btn primary" onclick="saveConfig()">Save</button></div>
     </div>
     <div class="config-grid" id="config-grid"><div class="empty" style="grid-column:1/-1">Loading...</div></div>
   </div>
@@ -420,557 +338,228 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 </main>
 </div>
 </div>
-
 <div class="toast-area" id="toastArea"></div>
-
 <script>
-let API = localStorage.getItem('futures_api_url') || 'http://localhost:3001';
-let _data = null;
-let _autoRefresh = null;
-let _autoLog = true;
-let _logTimer = null;
-let _fullConfig = null;
-let _isAutoMode = true;
+let API=localStorage.getItem('futures_api_url')||'http://localhost:3001';
+let _data=null,_autoRefresh=null,_autoLog=true,_logTimer=null,_fullConfig=null,_isAutoMode=true;
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('apiUrl').value = API;
-  connect();
-});
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('apiUrl').value=API;connect();});
 
-function connect() {
-  API = document.getElementById('apiUrl').value.replace(/\/$/, '');
-  localStorage.setItem('futures_api_url', API);
-  refreshAll();
-  if (_autoRefresh) clearInterval(_autoRefresh);
-  _autoRefresh = setInterval(refreshAll, 8000);
+function connect(){API=document.getElementById('apiUrl').value.replace(/\/$/,'');localStorage.setItem('futures_api_url',API);refreshAll();if(_autoRefresh)clearInterval(_autoRefresh);_autoRefresh=setInterval(refreshAll,8000);}
+
+async function refreshAll(){
+  document.getElementById('refreshIcon').className='spin';
+  try{const r=await apiFetch('/api/status');if(r.ok){_data=r;renderAll(r);setConn(true);}}catch(e){setConn(false);}
+  document.getElementById('refreshIcon').textContent='↻';document.getElementById('refreshIcon').className='';
+  document.getElementById('lastUpdate').textContent='Updated '+new Date().toLocaleTimeString('id-ID');
 }
 
-async function refreshAll() {
-  document.getElementById('refreshIcon').className = 'spin';
-  try {
-    const res = await apiFetch('/api/status');
-    if (res.ok) { _data = res; renderAll(res); setConn(true); }
-  } catch(e) { setConn(false); }
-  document.getElementById('refreshIcon').textContent = '↻';
-  document.getElementById('refreshIcon').className = '';
-  document.getElementById('lastUpdate').textContent = 'Updated ' + new Date().toLocaleTimeString('id-ID');
+async function apiFetch(path,opts={}){const r=await fetch(API+path,{headers:{'Content-Type':'application/json',...opts.headers},...opts});return r.json();}
+async function apiPost(path,body){return apiFetch(path,{method:'POST',body:JSON.stringify(body||{})});}
+
+function setConn(ok){document.getElementById('connDot').className='dot'+(ok?' live':'');document.getElementById('connLabel').textContent=ok?'Connected':'Disconnected';}
+
+function renderAll(d){
+  renderStats(d);renderPositionsOverview(d.positions);renderPositionsPage(d.positions);
+  renderPendingQueue(d.pending);renderModeUI(d.config?.autoExecute!==false);updateClosePosList(d.positions);
+  const nb=d.pending?.length||0,pb=document.getElementById('pendingBadge');
+  pb.style.display=nb>0?'':'none';pb.textContent=nb;
+  document.getElementById('pending-panel-mini').style.display=nb>0?'':'none';
 }
 
-async function apiFetch(path, opts = {}) {
-  const res = await fetch(API + path, { headers: { 'Content-Type': 'application/json', ...opts.headers }, ...opts });
-  return res.json();
-}
-async function apiPost(path, body) { return apiFetch(path, { method: 'POST', body: JSON.stringify(body || {}) }); }
-
-function setConn(ok) {
-  document.getElementById('connDot').className   = 'dot' + (ok ? ' live' : '');
-  document.getElementById('connLabel').textContent = ok ? 'Connected' : 'Disconnected';
-}
-
-function renderAll(d) {
-  renderStats(d);
-  renderPositionsOverview(d.positions);
-  renderPositionsPage(d.positions);
-  renderPendingQueue(d.pending);
-  renderModeUI(d.config?.autoExecute !== false);
-  updateClosePosList(d.positions);
-
-  // Pending badge
-  const nb = d.pending?.length || 0;
-  const pb = document.getElementById('pendingBadge');
-  pb.style.display = nb > 0 ? '' : 'none';
-  pb.textContent = nb;
-
-  // Pending panel mini di overview
-  document.getElementById('pending-panel-mini').style.display = nb > 0 ? '' : 'none';
+function renderModeUI(isAuto){
+  _isAutoMode=isAuto;
+  document.getElementById('modeIcon').textContent=isAuto?'⚡':'📋';
+  document.getElementById('modeTxt').textContent=isAuto?'AUTO':'MANUAL';
+  document.getElementById('modeToggleBtn').className='mode-btn '+(isAuto?'auto':'manual');
+  const ca=document.getElementById('card-auto'),cm=document.getElementById('card-manual');
+  if(ca){ca.style.borderColor=isAuto?'var(--green)':'var(--border)';ca.style.background=isAuto?'var(--green-bg)':'';cm.style.borderColor=!isAuto?'var(--yellow)':'var(--border)';cm.style.background=!isAuto?'var(--yellow-bg)':'';}
+  const lbl=document.getElementById('current-mode-label');if(lbl)lbl.textContent=isAuto?'⚡ AUTO':'📋 MANUAL';
+  const tl=document.getElementById('timeout-label');if(tl)tl.textContent=_data?.config?.approvalTimeoutMin??30;
+  const b=document.getElementById('mode-banner');
+  if(b){if(isAuto){b.style.cssText='padding:12px 16px;border-radius:var(--radius);border:1px solid var(--green);background:var(--green-bg);color:var(--green);font-size:12px;font-weight:500;';b.textContent='⚡ AUTO-EXECUTE — Signal langsung dieksekusi';}else{b.style.cssText='padding:12px 16px;border-radius:var(--radius);border:1px solid var(--yellow);background:var(--yellow-bg);color:var(--yellow);font-size:12px;font-weight:500;';b.textContent='📋 MANUAL APPROVAL — Approve via Telegram /approve SYMBOL long|short';}}
 }
 
-function renderModeUI(isAuto) {
-  _isAutoMode = isAuto;
-  // Topbar button
-  const btn = document.getElementById('modeToggleBtn');
-  const icon = document.getElementById('modeIcon');
-  const txt  = document.getElementById('modeTxt');
-  btn.className = `mode-btn ${isAuto ? 'auto' : 'manual'}`;
-  icon.textContent = isAuto ? '⚡' : '📋';
-  txt.textContent  = isAuto ? 'AUTO' : 'MANUAL';
-  btn.title = `Mode: ${isAuto ? 'AUTO' : 'MANUAL'} — klik untuk ganti`;
+async function toggleMode(){const m=!_isAutoMode;const r=await apiPost('/api/mode',{autoExecute:m});if(r.ok){renderModeUI(m);toast(m?'⚡ AUTO-EXECUTE':'📋 MANUAL APPROVAL','ok');}else toast('❌ '+r.error,'err');}
+async function setMode(isAuto){const r=await apiPost('/api/mode',{autoExecute:isAuto});if(r.ok){renderModeUI(isAuto);toast(isAuto?'⚡ AUTO':'📋 MANUAL','ok');}else toast('❌ '+r.error,'err');}
 
-  // Config page cards
-  const cardAuto   = document.getElementById('card-auto');
-  const cardManual = document.getElementById('card-manual');
-  if (cardAuto && cardManual) {
-    cardAuto.style.borderColor   = isAuto  ? 'var(--green)' : 'var(--border)';
-    cardAuto.style.background    = isAuto  ? 'var(--green-bg)' : '';
-    cardManual.style.borderColor = !isAuto ? 'var(--yellow)' : 'var(--border)';
-    cardManual.style.background  = !isAuto ? 'var(--yellow-bg)' : '';
-  }
+function renderStats(d){
+  const cfg=d.config||{},pnl=d.stats?.totalPnlUsdt??0,el=id=>document.getElementById(id);
+  el('st-pnl').textContent=(pnl>=0?'+':'')+pnl.toFixed(2)+' USDT';el('st-pnl').className='stat-value '+(pnl>=0?'green':'red');
+  el('st-open').textContent=d.stats?.openPositions??'—';el('st-open-sub').textContent='📈 '+(d.stats?.openLong??0)+' Long | 📉 '+(d.stats?.openShort??0)+' Short';
+  el('st-pending').textContent=d.pending?.length??'0';el('st-closed').textContent=d.stats?.closedCount??'—';
+  el('st-budget').textContent=(cfg.budgetPerTrade??'—')+' USDT';el('st-exposure').textContent='exposure: '+((cfg.budgetPerTrade??0)*(cfg.leverage??0))+' USDT';
+  el('modeLabel').textContent=cfg.isDryRun?'🧪 DRY RUN':'💸 LIVE';el('levLabel').textContent=cfg.leverage?cfg.leverage+'x':'—';el('marginLabel').textContent=cfg.marginMode||'—';
+  const pos=Object.values(d.positions||{});
+  if(pos.length){const dists=pos.map(p=>p.liqDist??999).filter(v=>v>0),m=dists.length?Math.min(...dists):null;el('st-liq').textContent=m!==null?m.toFixed(1)+'%':'—';el('st-liq').className='stat-value '+(m<20?'red':m<40?'orange':'green');}
+  else{el('st-liq').textContent='—';el('st-liq').className='stat-value';}
+}
 
-  // Mode labels
-  const lbl = document.getElementById('current-mode-label');
-  if (lbl) lbl.textContent = isAuto ? '⚡ AUTO-EXECUTE' : '📋 MANUAL APPROVAL';
+function posRow(p,mini=false){
+  const isLong=p.side==='long',sign=(p.pnlPct??0)>=0?'+':'',cls=(p.pnlPct??0)>=0?'green':'red';
+  const liqCls=p.liqDist<20?'red':p.liqDist<40?'orange':'gray';
+  const holdH=((Date.now()-new Date(p.openedAt))/3600000).toFixed(1);
+  const side=isLong?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>';
+  const status=[p.hasBEP&&'<span class="badge green">BEP</span>',p.trailingActive&&'<span class="badge blue">TRAIL</span>'].filter(Boolean).join(' ')||'<span class="badge gray">ACTIVE</span>';
+  if(mini)return`<tr><td><b>${p.symbol}</b></td><td>${side}</td><td>${p.entryPrice}</td><td>${p.currentPrice??'—'}</td><td><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2)??'—'}%</span></td><td style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2)??'—'}</td><td><span class="badge ${liqCls}">${p.liqDist?.toFixed(1)??'—'}%</span></td><td>${status}</td><td>${holdH}h</td><td><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td></tr>`;
+  return`<tr><td><b>${p.symbol}</b></td><td>${side}</td><td><span class="badge gray">${p.leverage}x</span></td><td>${p.entryPrice}</td><td>${p.currentPrice??'—'}</td><td><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2)??'—'}%</span></td><td style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2)??'—'}</td><td style="color:var(--red)">${p.slPrice?.toFixed(6)??'—'}</td><td style="color:var(--orange)">${p.liqPrice?.toFixed(6)??'—'}</td><td><span class="badge ${liqCls}">${p.liqDist?.toFixed(1)??'—'}%</span></td><td>${status}</td><td style="font-size:10px">${new Date(p.openedAt).toLocaleString('id-ID')}</td><td><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td></tr>`;
+}
 
-  const timeout = _data?.config?.approvalTimeoutMin ?? 30;
-  const tlbl = document.getElementById('timeout-label');
-  if (tlbl) tlbl.textContent = timeout;
+function renderPositionsOverview(positions){const e=Object.values(positions||{});document.getElementById('ov-pos-body').innerHTML=e.length?e.map(p=>posRow(p,true)).join(''):'<tr><td colspan="10" class="empty">Tidak ada posisi terbuka</td></tr>';}
+function renderPositionsPage(positions){const e=Object.values(positions||{});document.getElementById('pos-body').innerHTML=e.length?e.map(p=>posRow(p,false)).join(''):'<tr><td colspan="13" class="empty">Tidak ada posisi terbuka</td></tr>';}
 
-  // Mode banner di screening page
-  const banner = document.getElementById('mode-banner');
-  if (banner) {
-    if (isAuto) {
-      banner.style.borderColor = 'var(--green)';
-      banner.style.background  = 'var(--green-bg)';
-      banner.style.color       = 'var(--green)';
-      banner.textContent       = '⚡ Mode: AUTO-EXECUTE — Signal akan langsung dieksekusi tanpa konfirmasi';
-    } else {
-      banner.style.borderColor = 'var(--yellow)';
-      banner.style.background  = 'var(--yellow-bg)';
-      banner.style.color       = 'var(--yellow)';
-      banner.textContent       = `📋 Mode: MANUAL APPROVAL — Signal akan kirim notif Telegram, approve via /approve SYMBOL long|short (timeout ${timeout}m)`;
+function renderPendingQueue(pending){
+  const ov=document.getElementById('ov-pending-body');
+  if(ov)ov.innerHTML=(pending||[]).map(p=>{const isLong=p.side==='long',chgCls=p.change24h>=0?'green':'red',chg=p.change24h>=0?'+'+p.change24h?.toFixed(2)+'%':p.change24h?.toFixed(2)+'%';
+    return`<tr><td><b>${p.symbol}</b></td><td>${isLong?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>'}</td><td>${p.lastPrice??'—'}</td><td><span class="badge ${chgCls}">${chg}</span></td><td style="color:var(--red)">${p.slPrice?.toFixed(6)??'—'}</td><td>${p.minsLeft}m</td><td><div style="display:flex;gap:4px"><button class="btn sm success" onclick="approvePos('${p.symbol}','${p.side}')">✓</button><button class="btn sm danger" onclick="skipPos('${p.symbol}','${p.side}')">Skip</button></div></td></tr>`;}).join('');
+  const c=document.getElementById('pending-cards');if(!c)return;
+  if(!pending?.length){c.innerHTML='<div class="empty">Tidak ada kandidat pending</div>';return;}
+  c.innerHTML=pending.map(p=>{const isLong=p.side==='long',chgCls=p.change24h>=0?'green':'red',chg=p.change24h>=0?'+'+p.change24h?.toFixed(2)+'%':p.change24h?.toFixed(2)+'%';
+    const sig=Object.entries(p.signals||{}).filter(([,v])=>v?.label).map(([,v])=>`<span class="badge gray" style="margin:2px">${v.label}</span>`).join('');
+    return`<div class="pending-card"><div class="pending-card-header"><b style="font-size:14px">${p.symbol}</b>${isLong?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>'}<span class="badge ${chgCls}">${chg}</span><span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)">⏰ ${p.minsLeft}m</span></div><div class="pending-card-body"><div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-bottom:8px">SL: ${p.slPrice?.toFixed(6)??'—'}</div>${sig||'<span style="color:var(--muted);font-size:11px">—</span>'}</div><div class="pending-card-actions"><button class="btn success" onclick="approvePos('${p.symbol}','${p.side}')">✓ Approve</button><button class="btn danger" onclick="skipPos('${p.symbol}','${p.side}')">Skip</button></div></div>`;}).join('');
+}
+
+function updateClosePosList(positions){
+  const el=document.getElementById('close-pos-list');if(!el)return;
+  const e=Object.values(positions||{});
+  if(!e.length){el.textContent='— Tidak ada posisi terbuka —';return;}
+  el.innerHTML='Klik untuk isi form: '+e.map(p=>`<span onclick="fillCloseForm('${p.symbol}','${p.side}')" style="cursor:pointer;margin:0 4px;color:var(--blue);text-decoration:underline">${p.symbol} ${p.side}</span>`).join(' | ');
+}
+function fillCloseForm(s,side){document.getElementById('close-symbol').value=s;document.getElementById('close-side').value=side;}
+
+async function approvePos(symbol,side){if(!confirm('Approve '+side.toUpperCase()+' '+symbol+'?'))return;const r=await apiPost('/api/approve',{symbol,side});toast(r.ok?'✅ '+symbol+' dieksekusi':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,1500);}
+async function skipPos(symbol,side){const r=await apiPost('/api/skip',{symbol,side});toast(r.ok?'⏭ '+symbol+' diskip':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,500);}
+async function closePos(symbol,side){if(!confirm('Close '+side.toUpperCase()+' '+symbol+'?'))return;const r=await apiPost('/api/close',{symbol,side});toast(r.ok?'✅ '+symbol+' ditutup':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,1500);}
+async function closeAll(){
+  if(!confirm('Tutup SEMUA posisi?'))return;
+  for(const p of Object.values(_data?.positions||{})){const r=await apiPost('/api/close',{symbol:p.symbol,side:p.side});toast(r.ok?'✅ '+p.symbol+' ditutup':'❌ '+p.symbol+': '+r.error,r.ok?'ok':'err');await new Promise(r=>setTimeout(r,400));}
+  setTimeout(refreshAll,1500);
+}
+
+let _priceTimers={};
+async function previewPrice(side){
+  const sym=document.getElementById(side+'-symbol').value.trim().toUpperCase();
+  const pre=document.getElementById(side+'-preview');
+  if(!sym||sym.length<3){pre.textContent='Ketik symbol untuk preview harga...';return;}
+  clearTimeout(_priceTimers[side]);pre.textContent='Fetching '+sym+'...';
+  _priceTimers[side]=setTimeout(async()=>{
+    try{
+      const res=await apiFetch('/api/price/'+sym);
+      if(res.price){
+        const cfg=_data?.config||{},lev=cfg.leverage||5,budget=cfg.budgetPerTrade||10,slPct=cfg.stopLossPct||3,tpPct=cfg.takeProfitPct||5;
+        const sl=side==='long'?res.price*(1-slPct/100):res.price*(1+slPct/100);
+        const tp=side==='long'?res.price*(1+tpPct/100):res.price*(1-tpPct/100);
+        pre.innerHTML='💰 Price : <b>'+res.price+'</b><br>📦 Size  : '+budget+' USDT × '+lev+'x = '+(budget*lev)+' USDT<br>🛑 SL def: <span style="color:var(--red)">'+sl.toFixed(6)+'</span> ('+(side==='long'?'-':'+')+slPct+'%)<br>🎯 TP def: <span style="color:var(--green)">'+tp.toFixed(6)+'</span> ('+(side==='long'?'+':'-')+tpPct+'%)';
+        const si=document.getElementById(side+'-sl'),ti=document.getElementById(side+'-tp');
+        if(si&&!si.value)si.value=sl.toFixed(6);
+        if(ti&&!ti.value)ti.value=tp.toFixed(6);
+      }else{pre.innerHTML='<span style="color:var(--red)">❌ Symbol "'+sym+'" tidak ditemukan di Bitget Futures</span>';}
+    }catch{pre.innerHTML='<span style="color:var(--red)">❌ Error ambil harga</span>';}
+  },600);
+}
+
+async function doManualOpen(side){
+  const sym=document.getElementById(side+'-symbol').value.trim().toUpperCase();
+  const ev=document.getElementById(side+'-entry')?.value.trim();
+  const sv=document.getElementById(side+'-sl')?.value.trim();
+  const tv=document.getElementById(side+'-tp')?.value.trim();
+  if(!sym){toast('Masukkan symbol','err');return;}
+  const entryPrice=ev?parseFloat(ev):null,slPrice=sv?parseFloat(sv):null,tp1Price=tv?parseFloat(tv):null;
+  if(slPrice!==null){
+    const r0=await apiFetch('/api/price/'+sym);
+    if(r0.price){const ref=entryPrice??r0.price;
+      if(side==='long'&&slPrice>=ref){toast('❌ SL Long harus di BAWAH harga entry','err');return;}
+      if(side==='short'&&slPrice<=ref){toast('❌ SL Short harus di ATAS harga entry','err');return;}
     }
   }
+  const label=side==='long'?'📈 LONG':'📉 SHORT';
+  const info=[(entryPrice?'Entry='+entryPrice:'Entry=market'),(slPrice?'SL='+slPrice:'SL=auto'),(tp1Price?'TP='+tp1Price:'TP=auto')].join(' | ');
+  if(!confirm('Open '+label+' '+sym+'?\n'+info))return;
+  const r=await apiPost('/api/open',{symbol:sym,side,slPrice,tp1Price});
+  if(r.ok){
+    toast('✅ '+label+' '+sym+' @ '+r.entryPrice,'ok');
+    ['symbol','entry','sl','tp'].forEach(f=>{const el=document.getElementById(side+'-'+f);if(el)el.value='';});
+    document.getElementById(side+'-preview').textContent='Ketik symbol untuk preview harga...';
+    setTimeout(refreshAll,1500);
+  }else toast('❌ '+r.error,'err');
 }
 
-async function toggleMode() {
-  const newMode = !_isAutoMode;
-  const res = await apiPost('/api/mode', { autoExecute: newMode });
-  if (res.ok) {
-    renderModeUI(newMode);
-    toast(`${newMode ? '⚡ Mode: AUTO-EXECUTE' : '📋 Mode: MANUAL APPROVAL'}`, 'ok');
-  } else {
-    toast(`❌ ${res.error}`, 'err');
-  }
+async function doManualClose(){
+  const sym=document.getElementById('close-symbol').value.trim().toUpperCase();
+  const side=document.getElementById('close-side').value;
+  if(!sym){toast('Masukkan symbol','err');return;}
+  if(!confirm('Close '+side.toUpperCase()+' '+sym+'?'))return;
+  await closePos(sym,side);
 }
 
-async function setMode(isAuto) {
-  const res = await apiPost('/api/mode', { autoExecute: isAuto });
-  if (res.ok) { renderModeUI(isAuto); toast(`${isAuto ? '⚡ AUTO-EXECUTE' : '📋 MANUAL APPROVAL'}`, 'ok'); }
-  else { toast(`❌ ${res.error}`, 'err'); }
+async function doScreen(side){await apiPost('/api/screen',{side});toast('🔍 Screening '+side+'...');setTimeout(()=>{showPage('logs');loadLogs();},1500);}
+async function doManage(){await apiPost('/api/manage',{});toast('⚙ Management cycle dimulai');}
+
+async function loadHistory(){
+  const r=await apiFetch('/api/history');const tb=document.getElementById('history-body');
+  if(!r.ok||!r.trades?.length){tb.innerHTML='<tr><td colspan="6" class="empty">Tidak ada history</td></tr>';return;}
+  tb.innerHTML=r.trades.map(t=>{const isOpen=t.side?.includes('open'),isLong=t.side?.includes('long');
+    const b=isOpen?`<span class="badge ${isLong?'green':'red'}">${isLong?'📈 OPEN LONG':'📉 OPEN SHORT'}</span>`:`<span class="badge gray">${isLong?'🔒 CLOSE LONG':'🔒 CLOSE SHORT'}</span>`;
+    return`<tr><td style="font-size:10px">${new Date(t.ts).toLocaleString('id-ID')}</td><td>${b}</td><td><b>${t.symbol}</b></td><td>${t.price}</td><td>${t.qty}</td><td><span class="badge gray">${t.reason||'—'}</span></td></tr>`;}).join('');
 }
 
-function renderStats(d) {
-  const cfg = d.config || {};
-  const pnl = d.stats?.totalPnlUsdt ?? 0;
-  const el  = id => document.getElementById(id);
-
-  el('st-pnl').textContent      = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + ' USDT';
-  el('st-pnl').className        = 'stat-value ' + (pnl >= 0 ? 'green' : 'red');
-  el('st-open').textContent     = d.stats?.openPositions ?? '—';
-  el('st-open-sub').textContent = `📈 ${d.stats?.openLong ?? 0} Long | 📉 ${d.stats?.openShort ?? 0} Short`;
-  el('st-pending').textContent  = d.pending?.length ?? '0';
-  el('st-closed').textContent   = d.stats?.closedCount ?? '—';
-  el('st-budget').textContent   = (cfg.budgetPerTrade ?? '—') + ' USDT';
-  el('st-exposure').textContent = `exposure: ${(cfg.budgetPerTrade ?? 0) * (cfg.leverage ?? 0)} USDT`;
-  el('modeLabel').textContent   = cfg.isDryRun ? '🧪 DRY RUN' : '💸 LIVE';
-  el('levLabel').textContent    = cfg.leverage ? `${cfg.leverage}x` : '—';
-  el('marginLabel').textContent = cfg.marginMode || '—';
-
-  const positions = Object.values(d.positions || {});
-  if (positions.length > 0) {
-    const dists  = positions.map(p => p.liqDist ?? 999).filter(v => v > 0);
-    const minLiq = dists.length ? Math.min(...dists) : null;
-    el('st-liq').textContent = minLiq !== null ? minLiq.toFixed(1) + '%' : '—';
-    el('st-liq').className   = 'stat-value ' + (minLiq < 20 ? 'red' : minLiq < 40 ? 'orange' : 'green');
-  } else {
-    el('st-liq').textContent = '—';
-    el('st-liq').className   = 'stat-value';
-  }
+async function loadLogs(){
+  const r=await apiFetch('/api/logs?n=200');const box=document.getElementById('log-box');
+  if(!r.ok){box.textContent='Gagal memuat log';return;}
+  box.innerHTML=r.logs.map(line=>{const cls=line.includes('ERROR')||line.includes('_error')?'log-err':line.includes('WARN')?'log-warn':line.includes('✅')||line.includes('LONG')||line.includes('SHORT')||line.includes('CLOSE')?'log-ok':'';return`<span class="${cls}">${escHtml(line)}</span>`;}).join('\n');
+  box.scrollTop=box.scrollHeight;
 }
 
-function posRow(p, mini = false) {
-  const isLong  = p.side === 'long';
-  const sign    = (p.pnlPct ?? 0) >= 0 ? '+' : '';
-  const cls     = (p.pnlPct ?? 0) >= 0 ? 'green' : 'red';
-  const liqCls  = p.liqDist < 20 ? 'red' : p.liqDist < 40 ? 'orange' : 'gray';
-  const holdH   = ((Date.now() - new Date(p.openedAt)) / 3600000).toFixed(1);
-  const side    = isLong ? '<span class="badge green">📈 LONG</span>' : '<span class="badge red">📉 SHORT</span>';
-  const status  = [p.hasBEP && '<span class="badge green">BEP</span>', p.trailingActive && '<span class="badge blue">TRAIL</span>'].filter(Boolean).join(' ') || '<span class="badge gray">ACTIVE</span>';
+function toggleAutoLog(){_autoLog=!_autoLog;document.getElementById('autoLogBtn').textContent='Auto: '+(_autoLog?'ON':'OFF');if(_autoLog){_logTimer=setInterval(loadLogs,5000);loadLogs();}else clearInterval(_logTimer);}
 
-  if (mini) return `<tr>
-    <td><b>${p.symbol}</b></td><td>${side}</td>
-    <td>${p.entryPrice}</td><td>${p.currentPrice ?? '—'}</td>
-    <td><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2) ?? '—'}%</span></td>
-    <td style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2) ?? '—'}</td>
-    <td><span class="badge ${liqCls}">${p.liqDist?.toFixed(1) ?? '—'}%</span></td>
-    <td>${status}</td><td>${holdH}h</td>
-    <td><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td>
-  </tr>`;
-
-  const openedAt = new Date(p.openedAt).toLocaleString('id-ID');
-  return `<tr>
-    <td><b>${p.symbol}</b></td><td>${side}</td>
-    <td><span class="badge gray">${p.leverage}x</span></td>
-    <td>${p.entryPrice}</td><td>${p.currentPrice ?? '—'}</td>
-    <td><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2) ?? '—'}%</span></td>
-    <td style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2) ?? '—'}</td>
-    <td style="color:var(--red)">${p.slPrice?.toFixed(6) ?? '—'}</td>
-    <td style="color:var(--orange)">${p.liqPrice?.toFixed(6) ?? '—'}</td>
-    <td><span class="badge ${liqCls}">${p.liqDist?.toFixed(1) ?? '—'}%</span></td>
-    <td>${status}</td>
-    <td style="font-size:10px">${openedAt}</td>
-    <td><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td>
-  </tr>`;
+async function loadConfig(){
+  const r=await apiFetch('/api/config');if(!r.ok)return;_fullConfig=r.config;
+  const cfg=r.config,t=cfg.trading||{},m=cfg.management||{},lc=cfg.screening?.long||{},sc=cfg.screening?.short||{},u=cfg.screening?.utbot||{},s=cfg.schedule||{};
+  document.getElementById('config-grid').innerHTML=`
+    <div class="field"><label>Budget/Trade (USDT)</label><input id="cfg-budget" type="number" value="${t.budgetPerTrade||10}"></div>
+    <div class="field"><label>Leverage</label><input id="cfg-leverage" type="number" value="${t.leverage||5}"></div>
+    <div class="field"><label>Margin Mode</label><select id="cfg-margin"><option value="isolated" ${t.marginMode==='isolated'?'selected':''}>Isolated</option><option value="cross" ${t.marginMode==='cross'?'selected':''}>Cross</option></select></div>
+    <div class="field"><label>Approval Timeout (menit)</label><input id="cfg-timeout" type="number" value="${t.approvalTimeoutMin||30}"></div>
+    <div class="field"><label>Max Long Positions</label><input id="cfg-maxlong" type="number" value="${t.maxLongPositions||3}"></div>
+    <div class="field"><label>Max Short Positions</label><input id="cfg-maxshort" type="number" value="${t.maxShortPositions||3}"></div>
+    <div class="field"><label>Take Profit % (TP1)</label><input id="cfg-tp" type="number" step="0.1" value="${m.takeProfitPct||5}"></div>
+    <div class="field"><label>Stop Loss %</label><input id="cfg-sl" type="number" step="0.1" value="${Math.abs(m.stopLossPct||3)}"></div>
+    <div class="field"><label>Trailing Callback %</label><input id="cfg-trail" type="number" step="0.1" value="${m.trailingStop?.trailPct||1.5}"></div>
+    <div class="field"><label>Activate Trailing at %</label><input id="cfg-trail-act" type="number" step="0.1" value="${m.trailingStop?.activateAtProfitPct||3}"></div>
+    <div class="field"><label>Max Hold Hours</label><input id="cfg-maxhold" type="number" value="${m.maxHoldHours||48}"></div>
+    <div class="field"><label>Liquidation Buffer %</label><input id="cfg-liqbuf" type="number" value="${m.liquidationBufferPct||15}"></div>
+    <div class="field"><label>Long Min Gainer %</label><input id="cfg-long-min" type="number" step="0.1" value="${lc.minGainPct||5}"></div>
+    <div class="field"><label>Long Max Gainer %</label><input id="cfg-long-max" type="number" step="0.1" value="${lc.maxGainPct||20}"></div>
+    <div class="field"><label>Short Min Loss %</label><input id="cfg-short-min" type="number" step="0.1" value="${sc.minLossPct||3}"></div>
+    <div class="field"><label>Short Max Loss %</label><input id="cfg-short-max" type="number" step="0.1" value="${sc.maxLossPct||20}"></div>
+    <div class="field"><label>Min Volume 24h (USD)</label><input id="cfg-vol" type="number" value="${lc.minVolume24h||10000000}"></div>
+    <div class="field"><label>UTBot Key Value</label><input id="cfg-utbot-key" type="number" step="0.5" value="${u.keyValue||2}"></div>
+    <div class="field"><label>UTBot ATR Period</label><input id="cfg-utbot-atr" type="number" value="${u.atrPeriod||10}"></div>
+    <div class="field"><label>Screening Interval (menit)</label><input id="cfg-screen-int" type="number" value="${s.screeningIntervalMin||30}"></div>
+    <div class="field"><label>Management Interval (menit)</label><input id="cfg-manage-int" type="number" value="${s.managementIntervalMin||3}"></div>`;
+  renderModeUI(t.autoExecute!==false);
 }
 
-function renderPositionsOverview(positions) {
-  const tbody  = document.getElementById('ov-pos-body');
-  const entries = Object.values(positions || {});
-  tbody.innerHTML = entries.length
-    ? entries.map(p => posRow(p, true)).join('')
-    : '<tr><td colspan="10" class="empty">Tidak ada posisi terbuka</td></tr>';
+async function saveConfig(){
+  if(!_fullConfig){toast('Load config dulu','err');return;}
+  const v=id=>document.getElementById(id)?.value;
+  const updates={trading:{budgetPerTrade:parseFloat(v('cfg-budget')),leverage:parseFloat(v('cfg-leverage')),marginMode:v('cfg-margin'),approvalTimeoutMin:parseInt(v('cfg-timeout')),maxLongPositions:parseInt(v('cfg-maxlong')),maxShortPositions:parseInt(v('cfg-maxshort'))},management:{takeProfitPct:parseFloat(v('cfg-tp')),stopLossPct:parseFloat(v('cfg-sl')),maxHoldHours:parseInt(v('cfg-maxhold')),liquidationBufferPct:parseInt(v('cfg-liqbuf')),trailingStop:{trailPct:parseFloat(v('cfg-trail')),activateAtProfitPct:parseFloat(v('cfg-trail-act'))}},screening:{long:{minGainPct:parseFloat(v('cfg-long-min')),maxGainPct:parseFloat(v('cfg-long-max')),minVolume24h:parseFloat(v('cfg-vol'))},short:{minLossPct:parseFloat(v('cfg-short-min')),maxLossPct:parseFloat(v('cfg-short-max')),minVolume24h:parseFloat(v('cfg-vol'))},utbot:{keyValue:parseFloat(v('cfg-utbot-key')),atrPeriod:parseInt(v('cfg-utbot-atr'))}},schedule:{screeningIntervalMin:parseInt(v('cfg-screen-int')),managementIntervalMin:parseInt(v('cfg-manage-int'))}};
+  const r=await apiPost('/api/config',updates);toast(r.ok?'✅ Config tersimpan':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,500);
 }
 
-function renderPositionsPage(positions) {
-  const tbody  = document.getElementById('pos-body');
-  const entries = Object.values(positions || {});
-  tbody.innerHTML = entries.length
-    ? entries.map(p => posRow(p, false)).join('')
-    : '<tr><td colspan="13" class="empty">Tidak ada posisi terbuka</td></tr>';
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')?.includes(name))n.classList.add('active');});
+  if(name==='history')loadHistory();
+  if(name==='logs'){loadLogs();if(_autoLog&&!_logTimer)_logTimer=setInterval(loadLogs,5000);}
+  if(name==='config')loadConfig();
+  if(name!=='logs'){clearInterval(_logTimer);_logTimer=null;}
 }
 
-function renderPendingQueue(pending) {
-  // Overview mini table
-  const ov = document.getElementById('ov-pending-body');
-  if (ov) {
-    ov.innerHTML = (pending || []).map(p => {
-      const isLong = p.side === 'long';
-      const chgCls = p.change24h >= 0 ? 'green' : 'red';
-      const chg    = p.change24h >= 0 ? `+${p.change24h?.toFixed(2)}%` : `${p.change24h?.toFixed(2)}%`;
-      return `<tr>
-        <td><b>${p.symbol}</b></td>
-        <td>${isLong ? '<span class="badge green">📈 LONG</span>' : '<span class="badge red">📉 SHORT</span>'}</td>
-        <td>${p.lastPrice ?? '—'}</td>
-        <td><span class="badge ${chgCls}">${chg}</span></td>
-        <td style="color:var(--red)">${p.slPrice?.toFixed(6) ?? '—'}</td>
-        <td>${p.minsLeft}m</td>
-        <td>
-          <div style="display:flex;gap:4px">
-            <button class="btn sm success" onclick="approvePos('${p.symbol}','${p.side}')">✓ Approve</button>
-            <button class="btn sm danger"  onclick="skipPos('${p.symbol}','${p.side}')">Skip</button>
-          </div>
-        </td>
-      </tr>`;
-    }).join('');
-  }
-
-  // Full pending page
-  const container = document.getElementById('pending-cards');
-  if (!container) return;
-  if (!pending?.length) { container.innerHTML = '<div class="empty">Tidak ada kandidat pending</div>'; return; }
-
-  container.innerHTML = pending.map(p => {
-    const isLong = p.side === 'long';
-    const chgCls = p.change24h >= 0 ? 'green' : 'red';
-    const chg    = p.change24h >= 0 ? `+${p.change24h?.toFixed(2)}%` : `${p.change24h?.toFixed(2)}%`;
-    const sigHtml = Object.entries(p.signals || {})
-      .filter(([,v]) => v?.label)
-      .map(([,v]) => `<span class="badge gray" style="margin:2px">${v.label}</span>`)
-      .join('');
-
-    return `<div class="pending-card">
-      <div class="pending-card-header">
-        <b style="font-size:14px">${p.symbol}</b>
-        ${isLong ? '<span class="badge green">📈 LONG</span>' : '<span class="badge red">📉 SHORT</span>'}
-        <span class="badge ${chgCls}">${chg}</span>
-        <span class="badge gray">${p.strategy || 'signal'}</span>
-        <span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted)">⏰ sisa ${p.minsLeft}m</span>
-      </div>
-      <div class="pending-card-body">
-        <div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-bottom:8px">SL ref: ${p.slPrice?.toFixed(6) ?? '—'}</div>
-        <div>${sigHtml || '<span style="color:var(--muted);font-size:11px">—</span>'}</div>
-      </div>
-      <div class="pending-card-actions">
-        <button class="btn success" onclick="approvePos('${p.symbol}','${p.side}')">✓ Approve ${p.side.toUpperCase()}</button>
-        <button class="btn danger" onclick="skipPos('${p.symbol}','${p.side}')">Skip</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function updateClosePosList(positions) {
-  const el = document.getElementById('close-pos-list');
-  if (!el) return;
-  const entries = Object.values(positions || {});
-  if (!entries.length) { el.textContent = '— Tidak ada posisi terbuka —'; return; }
-  el.innerHTML = 'Posisi aktif: ' + entries.map(p =>
-    `<span onclick="fillCloseForm('${p.symbol}','${p.side}')" style="cursor:pointer;margin:0 4px;color:var(--blue);text-decoration:underline">${p.symbol} ${p.side}</span>`
-  ).join(' | ');
-}
-
-function fillCloseForm(symbol, side) {
-  document.getElementById('close-symbol').value = symbol;
-  document.getElementById('close-side').value   = side;
-}
-
-// ── Actions ───────────────────────────────────────────────────────────────────
-async function approvePos(symbol, side) {
-  if (!confirm(`Approve ${side.toUpperCase()} ${symbol}?`)) return;
-  const res = await apiPost('/api/approve', { symbol, side });
-  toast(res.ok ? `✅ ${symbol} ${side} dieksekusi` : `❌ ${res.error}`, res.ok ? 'ok' : 'err');
-  if (res.ok) setTimeout(refreshAll, 1500);
-}
-
-async function skipPos(symbol, side) {
-  const res = await apiPost('/api/skip', { symbol, side });
-  toast(res.ok ? `⏭ ${symbol} ${side} diskip` : `❌ ${res.error}`, res.ok ? 'ok' : 'err');
-  if (res.ok) setTimeout(refreshAll, 500);
-}
-
-async function closePos(symbol, side) {
-  if (!confirm(`Close ${side.toUpperCase()} ${symbol}?`)) return;
-  const res = await apiPost('/api/close', { symbol, side });
-  toast(res.ok ? `✅ ${symbol} ${side} ditutup` : `❌ ${res.error}`, res.ok ? 'ok' : 'err');
-  if (res.ok) setTimeout(refreshAll, 1500);
-}
-
-async function closeAll() {
-  if (!confirm('Tutup SEMUA posisi?')) return;
-  const positions = Object.values(_data?.positions || {});
-  for (const p of positions) {
-    const res = await apiPost('/api/close', { symbol: p.symbol, side: p.side });
-    toast(res.ok ? `✅ ${p.symbol} ${p.side} ditutup` : `❌ ${p.symbol}: ${res.error}`, res.ok ? 'ok' : 'err');
-    await new Promise(r => setTimeout(r, 400));
-  }
-  setTimeout(refreshAll, 1500);
-}
-
-// Manual trade
-let _priceTimers = {};
-async function previewPrice(side) {
-  const sym = document.getElementById(`${side}-symbol`).value.trim().toUpperCase();
-  const pre = document.getElementById(`${side}-preview`);
-  if (!sym) { pre.textContent = 'Ketik symbol...'; return; }
-  clearTimeout(_priceTimers[side]);
-  _priceTimers[side] = setTimeout(async () => {
-    try {
-      const res = await apiFetch(`/api/price/${sym}`);
-      if (res.price) {
-        const cfg      = _data?.config || {};
-        const leverage = cfg.leverage || 5;
-        const budget   = cfg.budgetPerTrade || 50;
-        const exposure = budget * leverage;
-        const slPct    = cfg.stopLossPct || 3;
-        const tp1Pct   = cfg.takeProfitPct || 8;
-        const slPrice  = side === 'long' ? res.price * (1 - slPct/100) : res.price * (1 + slPct/100);
-        const tp1Price = side === 'long' ? res.price * (1 + tp1Pct/100) : res.price * (1 - tp1Pct/100);
-        pre.innerHTML =
-          `Price  : <b>${res.price}</b><br>` +
-          `Budget : ${budget} USDT × ${leverage}x = ${exposure} USDT exposure<br>` +
-          `SL dflt: <span style="color:var(--red)">${slPrice.toFixed(6)}</span> (-${slPct}%)<br>` +
-          `TP dflt: <span style="color:var(--green)">${tp1Price.toFixed(6)}</span> (+${tp1Pct}%)`;
-
-        // Auto-fill SL & TP input jika masih kosong
-        const slInp = document.getElementById(`${side}-sl`);
-        const tpInp = document.getElementById(`${side}-tp`);
-        if (slInp && !slInp.value) slInp.value = slPrice.toFixed(6);
-        if (tpInp && !tpInp.value) tpInp.value = tp1Price.toFixed(6);
-      } else { pre.textContent = 'Symbol tidak ditemukan'; }
-    } catch { pre.textContent = 'Error mengambil harga'; }
-  }, 600);
-}
-
-async function doManualOpen(side) {
-  const sym   = document.getElementById(`${side}-symbol`).value.trim().toUpperCase();
-  const slVal = document.getElementById(`${side}-sl`)?.value.trim();
-  const tpVal = document.getElementById(`${side}-tp`)?.value.trim();
-  if (!sym) { toast('Masukkan symbol', 'err'); return; }
-
-  const slPrice  = slVal ? parseFloat(slVal) : null;
-  const tp1Price = tpVal ? parseFloat(tpVal) : null;
-
-  // Validasi SL direction
-  if (slPrice !== null) {
-    const res0 = await apiFetch(`/api/price/${sym}`);
-    if (res0.price) {
-      if (side === 'long'  && slPrice >= res0.price) { toast('❌ SL Long harus di BAWAH harga saat ini', 'err'); return; }
-      if (side === 'short' && slPrice <= res0.price) { toast('❌ SL Short harus di ATAS harga saat ini', 'err'); return; }
-    }
-  }
-
-  const label  = side === 'long' ? '📈 LONG' : '📉 SHORT';
-  const slInfo = slPrice  ? ` SL=${slPrice}` : ' SL=auto';
-  const tpInfo = tp1Price ? ` TP=${tp1Price}` : ' TP=auto';
-  if (!confirm(`Open ${label} ${sym}?${slInfo}${tpInfo}`)) return;
-
-  const res = await apiPost('/api/open', { symbol: sym, side, slPrice, tp1Price });
-  if (res.ok) {
-    toast(`✅ ${label} ${sym} @ ${res.entryPrice} | SL=${res.slPrice?.toFixed(4)} TP=${res.tp1Price?.toFixed(4)}`, 'ok');
-    ['symbol','sl','tp'].forEach(f => {
-      const el = document.getElementById(`${side}-${f}`);
-      if (el) el.value = '';
-    });
-    document.getElementById(`${side}-preview`).textContent = 'Ketik symbol...';
-    setTimeout(refreshAll, 1500);
-  } else {
-    toast(`❌ ${res.error}`, 'err');
-  }
-}
-
-async function doManualClose() {
-  const sym  = document.getElementById('close-symbol').value.trim().toUpperCase();
-  const side = document.getElementById('close-side').value;
-  if (!sym) { toast('Masukkan symbol', 'err'); return; }
-  if (!confirm(`Close ${side.toUpperCase()} ${sym}?`)) return;
-  await closePos(sym, side);
-}
-
-async function doScreen(side) {
-  const res = await apiPost('/api/screen', { side });
-  toast(`🔍 Screening ${side} dimulai...`, '');
-  const box = document.getElementById('screen-log');
-  box.style.display = 'block';
-  box.textContent = `Screening ${side} berjalan... pantau di Bot Logs`;
-  setTimeout(() => { showPage('logs'); loadLogs(); }, 2000);
-}
-
-async function doManage() {
-  await apiPost('/api/manage', {});
-  toast('⚙ Management cycle dimulai');
-}
-
-async function loadHistory() {
-  const res = await apiFetch('/api/history');
-  const tbody = document.getElementById('history-body');
-  if (!res.ok || !res.trades?.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">Tidak ada history</td></tr>'; return; }
-  tbody.innerHTML = res.trades.map(t => {
-    const isOpen  = t.side?.includes('open');
-    const isLong  = t.side?.includes('long');
-    const badge   = isOpen
-      ? `<span class="badge ${isLong ? 'green' : 'red'}">${isLong ? '📈 OPEN LONG' : '📉 OPEN SHORT'}</span>`
-      : `<span class="badge gray">${isLong ? '🔒 CLOSE LONG' : '🔒 CLOSE SHORT'}</span>`;
-    return `<tr>
-      <td style="font-size:10px">${new Date(t.ts).toLocaleString('id-ID')}</td>
-      <td>${badge}</td><td><b>${t.symbol}</b></td>
-      <td>${t.price}</td><td>${t.qty}</td>
-      <td><span class="badge gray">${t.reason || '—'}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-async function loadLogs() {
-  const res = await apiFetch('/api/logs?n=200');
-  const box = document.getElementById('log-box');
-  if (!res.ok) { box.textContent = 'Gagal memuat log'; return; }
-  box.innerHTML = res.logs.map(line => {
-    const cls = line.includes('ERROR') || line.includes('_error') ? 'log-err'
-      : line.includes('WARN') ? 'log-warn'
-      : line.includes('✅') || line.includes('LONG') || line.includes('SHORT') || line.includes('CLOSE') ? 'log-ok'
-      : '';
-    return `<span class="${cls}">${escHtml(line)}</span>`;
-  }).join('\n');
-  box.scrollTop = box.scrollHeight;
-}
-
-function toggleAutoLog() {
-  _autoLog = !_autoLog;
-  document.getElementById('autoLogBtn').textContent = `Auto: ${_autoLog ? 'ON' : 'OFF'}`;
-  if (_autoLog) { _logTimer = setInterval(loadLogs, 5000); loadLogs(); }
-  else { clearInterval(_logTimer); }
-}
-
-async function loadConfig() {
-  const res = await apiFetch('/api/config');
-  if (!res.ok) return;
-  _fullConfig = res.config;
-  const cfg    = res.config;
-  const trade  = cfg.trading  || {};
-  const mgmt   = cfg.management || {};
-  const longCfg  = cfg.screening?.long  || {};
-  const shortCfg = cfg.screening?.short || {};
-  const utbot    = cfg.screening?.utbot  || {};
-  const sched    = cfg.schedule || {};
-
-  document.getElementById('config-grid').innerHTML = `
-    <div class="field"><label>Budget / Trade (USDT)</label><input id="cfg-budget" type="number" value="${trade.budgetPerTrade||50}"></div>
-    <div class="field"><label>Leverage Default</label><input id="cfg-leverage" type="number" value="${trade.leverage||5}"></div>
-    <div class="field"><label>Margin Mode</label>
-      <select id="cfg-margin">
-        <option value="isolated" ${trade.marginMode==='isolated'?'selected':''}>Isolated (Recommended)</option>
-        <option value="cross" ${trade.marginMode==='cross'?'selected':''}>Cross</option>
-      </select>
-    </div>
-    <div class="field"><label>Approval Timeout (menit)</label><input id="cfg-timeout" type="number" value="${trade.approvalTimeoutMin||30}"></div>
-    <div class="field"><label>Max Long Positions</label><input id="cfg-maxlong" type="number" value="${trade.maxLongPositions||3}"></div>
-    <div class="field"><label>Max Short Positions</label><input id="cfg-maxshort" type="number" value="${trade.maxShortPositions||3}"></div>
-    <div class="field"><label>Take Profit % (TP1)</label><input id="cfg-tp" type="number" step="0.1" value="${mgmt.takeProfitPct||8}"></div>
-    <div class="field"><label>Stop Loss %</label><input id="cfg-sl" type="number" step="0.1" value="${Math.abs(mgmt.stopLossPct||3)}"></div>
-    <div class="field"><label>Trailing Callback %</label><input id="cfg-trail" type="number" step="0.1" value="${mgmt.trailingStop?.trailPct||1.5}"></div>
-    <div class="field"><label>Activate Trailing at %</label><input id="cfg-trail-act" type="number" step="0.1" value="${mgmt.trailingStop?.activateAtProfitPct||3}"></div>
-    <div class="field"><label>Max Hold Hours</label><input id="cfg-maxhold" type="number" value="${mgmt.maxHoldHours||48}"></div>
-    <div class="field"><label>Liquidation Buffer %</label><input id="cfg-liqbuf" type="number" value="${mgmt.liquidationBufferPct||20}"></div>
-    <div class="field"><label>Long Min Gainer %</label><input id="cfg-long-min" type="number" step="0.1" value="${longCfg.minGainPct||5}"></div>
-    <div class="field"><label>Long Max Gainer %</label><input id="cfg-long-max" type="number" step="0.1" value="${longCfg.maxGainPct||20}"></div>
-    <div class="field"><label>Short Min Loss %</label><input id="cfg-short-min" type="number" step="0.1" value="${shortCfg.minLossPct||3}"></div>
-    <div class="field"><label>Short Max Loss %</label><input id="cfg-short-max" type="number" step="0.1" value="${shortCfg.maxLossPct||20}"></div>
-    <div class="field"><label>Min Volume 24h (USD)</label><input id="cfg-vol" type="number" value="${longCfg.minVolume24h||10000000}"></div>
-    <div class="field"><label>UTBot Key Value</label><input id="cfg-utbot-key" type="number" step="0.5" value="${utbot.keyValue||2}"></div>
-    <div class="field"><label>UTBot ATR Period</label><input id="cfg-utbot-atr" type="number" value="${utbot.atrPeriod||10}"></div>
-    <div class="field"><label>Screening Interval (menit)</label><input id="cfg-screen-int" type="number" value="${sched.screeningIntervalMin||60}"></div>
-    <div class="field"><label>Management Interval (menit)</label><input id="cfg-manage-int" type="number" value="${sched.managementIntervalMin||5}"></div>
-  `;
-
-  renderModeUI(trade.autoExecute !== false);
-}
-
-async function saveConfig() {
-  if (!_fullConfig) { toast('Load config dulu', 'err'); return; }
-  const v = id => document.getElementById(id)?.value;
-  const updates = {
-    trading: {
-      budgetPerTrade:     parseFloat(v('cfg-budget')),
-      leverage:           parseFloat(v('cfg-leverage')),
-      marginMode:         v('cfg-margin'),
-      approvalTimeoutMin: parseInt(v('cfg-timeout')),
-      maxLongPositions:   parseInt(v('cfg-maxlong')),
-      maxShortPositions:  parseInt(v('cfg-maxshort')),
-    },
-    management: {
-      takeProfitPct:        parseFloat(v('cfg-tp')),
-      stopLossPct:          parseFloat(v('cfg-sl')),
-      maxHoldHours:         parseInt(v('cfg-maxhold')),
-      liquidationBufferPct: parseInt(v('cfg-liqbuf')),
-      trailingStop: {
-        trailPct:            parseFloat(v('cfg-trail')),
-        activateAtProfitPct: parseFloat(v('cfg-trail-act')),
-      },
-    },
-    screening: {
-      long:  { minGainPct: parseFloat(v('cfg-long-min')), maxGainPct: parseFloat(v('cfg-long-max')), minVolume24h: parseFloat(v('cfg-vol')) },
-      short: { minLossPct: parseFloat(v('cfg-short-min')), maxLossPct: parseFloat(v('cfg-short-max')), minVolume24h: parseFloat(v('cfg-vol')) },
-      utbot: { keyValue: parseFloat(v('cfg-utbot-key')), atrPeriod: parseInt(v('cfg-utbot-atr')) },
-    },
-    schedule: {
-      screeningIntervalMin:  parseInt(v('cfg-screen-int')),
-      managementIntervalMin: parseInt(v('cfg-manage-int')),
-    },
-  };
-  const res = await apiPost('/api/config', updates);
-  toast(res.ok ? '✅ Config tersimpan' : `❌ ${res.error}`, res.ok ? 'ok' : 'err');
-  if (res.ok) setTimeout(refreshAll, 500);
-}
-
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name)?.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => { if (n.getAttribute('onclick')?.includes(name)) n.classList.add('active'); });
-  if (name === 'history') loadHistory();
-  if (name === 'logs')    { loadLogs(); if (_autoLog && !_logTimer) _logTimer = setInterval(loadLogs, 5000); }
-  if (name === 'config')  loadConfig();
-  if (name !== 'logs') { clearInterval(_logTimer); _logTimer = null; }
-}
-
-function toast(msg, type = '') {
-  const el = document.createElement('div');
-  el.className = 'toast ' + type;
-  el.textContent = msg;
-  document.getElementById('toastArea').appendChild(el);
-  setTimeout(() => el.remove(), 3500);
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function toast(msg,type=''){const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;document.getElementById('toastArea').appendChild(el);setTimeout(()=>el.remove(),3500);}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
 </html>
