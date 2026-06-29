@@ -13,17 +13,17 @@
     "approvalTimeoutMin": 30
   },
   "screening": {
-    "minVolume24h": 10000000,
+    "minVolume24h": 5000000,
     "long": {
       "minGainPct": 5,
       "maxGainPct": 20,
-      "minVolume24h": 10000000,
+      "minVolume24h": 5000000,
       "checkLimit": 200
     },
     "short": {
       "minLossPct": 3,
       "maxLossPct": 20,
-      "minVolume24h": 10000000,
+      "minVolume24h": 5000000,
       "checkLimit": 200
     },
     "utbot": {
@@ -32,7 +32,7 @@
       "atrPeriod": 10,
       "timeframe": "1h",
       "checkIntervalMin": 60,
-      "minVolume24h": 10000000,
+      "minVolume24h": 5000000,
       "filter1H_EMA21": true,
       "maxSignalsPerRun": 5
     }
