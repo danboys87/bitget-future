@@ -53,7 +53,7 @@
       "trailPct": 1.5
     },
     "maxHoldHours": 48,
-    "liquidationBufferPct": 15
+    "liquidationBufferPct": 10
   },
   "schedule": {
     "managementIntervalMin": 3,
