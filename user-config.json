@@ -56,8 +56,8 @@
     "liquidationBufferPct": 10
   },
   "schedule": {
-    "managementIntervalMin": 3,
-    "screeningIntervalMin": 30
+    "managementIntervalMin": 1,
+    "screeningIntervalMin": 60
   },
   "blacklist": [
     "USDCUSDT",
