@@ -52,7 +52,7 @@
       "activateAtProfitPct": 3,
       "trailPct": 1.5
     },
-    "maxHoldHours": 48,
+    "maxHoldHours": 72,
     "liquidationBufferPct": 10
   },
   "schedule": {
