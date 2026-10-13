@@ -107,7 +107,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <div class="topbar-sep"></div>
   <button class="mode-btn auto" id="modeToggleBtn" onclick="toggleMode()"><span id="modeIcon">⚡</span> <span id="modeTxt">AUTO</span></button>
   <div class="topbar-right">
-    <input class="api-input" id="apiUrl" placeholder="http://localhost:3001" value="http://localhost:3001">
+    <input class="api-input" id="apiUrl" placeholder="API URL (kosong = origin sama)">
     <button class="btn primary" onclick="connect()">Connect</button>
     <button class="btn" onclick="refreshAll()"><span id="refreshIcon">↻</span></button>
     <span style="font-family:var(--mono);font-size:11px;color:var(--muted)" id="lastUpdate"></span>
@@ -340,12 +340,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 </div>
 <div class="toast-area" id="toastArea"></div>
 <script>
-let API=localStorage.getItem('futures_api_url')||'http://localhost:3001';
+// API default = origin yang sama dengan halaman (otomatis jalan di Codespaces/Railway/localhost).
+// URL custom di localStorage hanya dipakai kalau bukan localhost (sisa setting lama diabaikan).
+const _savedApi=localStorage.getItem('futures_api_url');
+let API=(_savedApi&&!/localhost|127\.0\.0\.1/.test(_savedApi))?_savedApi:window.location.origin;
 let _data=null,_autoRefresh=null,_autoLog=true,_logTimer=null,_fullConfig=null,_isAutoMode=true;
 
 document.addEventListener('DOMContentLoaded',()=>{document.getElementById('apiUrl').value=API;connect();});
 
-function connect(){API=document.getElementById('apiUrl').value.replace(/\/$/,'');localStorage.setItem('futures_api_url',API);refreshAll();if(_autoRefresh)clearInterval(_autoRefresh);_autoRefresh=setInterval(refreshAll,8000);}
+function connect(){
+  const v=document.getElementById('apiUrl').value.trim().replace(/\/$/,'');
+  API=v||window.location.origin;
+  if(v&&v!==window.location.origin)localStorage.setItem('futures_api_url',v);else localStorage.removeItem('futures_api_url');
+  refreshAll();if(_autoRefresh)clearInterval(_autoRefresh);_autoRefresh=setInterval(refreshAll,8000);
+}
 
 async function refreshAll(){
   document.getElementById('refreshIcon').className='spin';
@@ -427,8 +435,8 @@ function updateClosePosList(positions){
 }
 function fillCloseForm(s,side){document.getElementById('close-symbol').value=s;document.getElementById('close-side').value=side;}
 
-async function approvePos(symbol,side){if(!confirm('Approve '+side.toUpperCase()+' '+symbol+'?'))return;const r=await apiPost('/api/approve',{symbol,side});toast(r.ok?'✅ '+symbol+' dieksekusi':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,1500);}
-async function skipPos(symbol,side){const r=await apiPost('/api/skip',{symbol,side});toast(r.ok?'⏭ '+symbol+' diskip':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,500);}
+async function approvePos(symbol,side){if(!confirm('Approve '+side.toUpperCase()+' '+symbol+'?'))return;const r=await apiPost('/api/approve',{symbol,side});toast(r.ok?'✅ '+symbol+' dieksekusi':'❌ '+(r.error||r.reason),r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,1500);}
+async function skipPos(symbol,side){const r=await apiPost('/api/skip',{symbol,side});toast(r.ok?'⏭ '+symbol+' diskip':'❌ '+(r.error||r.reason),r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,500);}
 async function closePos(symbol,side){if(!confirm('Close '+side.toUpperCase()+' '+symbol+'?'))return;const r=await apiPost('/api/close',{symbol,side});toast(r.ok?'✅ '+symbol+' ditutup':'❌ '+r.error,r.ok?'ok':'err');if(r.ok)setTimeout(refreshAll,1500);}
 async function closeAll(){
   if(!confirm('Tutup SEMUA posisi?'))return;

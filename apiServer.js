@@ -72,6 +72,19 @@ async function handle(req, res) {
     res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,X-Secret' });
     res.end(); return;
   }
+
+  // ── Serve dashboard ────────────────────────────────────────────────────────
+  if (method === 'GET' && (route === '/' || route === '/dashboard' || route === '/dashboard.html')) {
+    try {
+      const html = fs.readFileSync(path.join(__dirname, 'dashboard.html'));
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(html);
+    } catch (e) {
+      err(res, 'dashboard.html tidak ditemukan', 404);
+    }
+    return;
+  }
+
   if (method === 'POST' && !checkAuth(req)) { err(res, 'Unauthorized', 401); return; }
 
   // ── GET /api/status ────────────────────────────────────────────────────────

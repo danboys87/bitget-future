@@ -21,7 +21,8 @@ const DEFAULT_STATE = {
 function loadLocal() {
   try {
     if (fs.existsSync(STATE_FILE)) {
-      return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+      const txt = fs.readFileSync(STATE_FILE, 'utf8').trim();
+      if (txt) return JSON.parse(txt);
     }
   } catch (err) {
     log('state_error', `Gagal baca state: ${err.message}`);
