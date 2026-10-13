@@ -35,6 +35,11 @@ let _screenBusy = false;
 let _manageBusy = false;
 let _cronTasks  = [];
 
+// Jeda (detik) setelah candle close sebelum screening cron dijalankan,
+// supaya candle 1H baru sudah final di API Bitget. Bisa diubah lewat
+// user-config.json → schedule.screeningDelaySec
+const DEFAULT_SCREEN_DELAY_SEC = 10;
+
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function intervalToCron(minutes) {
@@ -288,13 +293,16 @@ function startCron() {
   stopCron();
   const manageMin = config.schedule?.managementIntervalMin ?? 5;
   const screenMin = config.schedule?.screeningIntervalMin  ?? 60;
+  const delaySec  = config.schedule?.screeningDelaySec     ?? DEFAULT_SCREEN_DELAY_SEC;
 
   log('cron', `Cron aktif:`);
-  log('cron', `  Screening  : setiap ${screenMin} menit`);
+  log('cron', `  Screening  : setiap ${screenMin} menit (+${delaySec}s setelah candle close)`);
   log('cron', `  Management : setiap ${manageMin} menit`);
   log('cron', `  Mode       : ${config.trading.autoExecute !== false ? '⚡ AUTO' : '📋 MANUAL'}`);
 
-  const screenTask = cron.schedule(intervalToCron(screenMin), () => {
+  const screenTask = cron.schedule(intervalToCron(screenMin), async () => {
+    log('cron', `⏳ Candle close — tunggu ${delaySec}s agar candle baru final...`);
+    await sleep(delaySec * 1000);
     log('cron', `🔍 Auto screening (mode: ${config.trading.autoExecute !== false ? 'AUTO' : 'MANUAL'})`);
     doScreening();
   });
@@ -422,13 +430,14 @@ async function main() {
   const cfg       = config.trading;
   const manageMin = config.schedule?.managementIntervalMin ?? 5;
   const screenMin = config.schedule?.screeningIntervalMin  ?? 60;
+  const delaySec  = config.schedule?.screeningDelaySec     ?? DEFAULT_SCREEN_DELAY_SEC;
   const isAuto    = cfg.autoExecute !== false;
 
   log('startup', `Config:`);
   log('startup', `  Budget/trade : ${cfg.budgetPerTrade} USDT | Lev: ${cfg.leverage}x | Exposure: ${cfg.budgetPerTrade * cfg.leverage} USDT`);
   log('startup', `  Margin mode  : ${cfg.marginMode}`);
   log('startup', `  Execute mode : ${isAuto ? '⚡ AUTO' : '📋 MANUAL (approval timeout: ' + cfg.approvalTimeoutMin + ' menit)'}`);
-  log('startup', `  Scheduling   : screen=${screenMin}m | manage=${manageMin}m`);
+  log('startup', `  Scheduling   : screen=${screenMin}m (+${delaySec}s delay) | manage=${manageMin}m`);
 
   await notifyStartup(isDryRun);
 
