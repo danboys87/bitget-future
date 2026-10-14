@@ -2,15 +2,17 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
 <title>Bitget Futures Bot</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f5f4f0;--surface:#fff;--border:#e2e0d8;--border2:#ccc9bc;--text:#1a1916;--muted:#7a7568;--accent:#1a1916;--green:#1a7a4a;--green-bg:#edf7f1;--red:#c0392b;--red-bg:#fdf0ee;--yellow:#b07d20;--yellow-bg:#fdf6e3;--blue:#1a4a7a;--blue-bg:#edf2f7;--orange:#c45c00;--orange-bg:#fef3e8;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--radius:6px;--shadow:0 1px 3px rgba(0,0,0,.07);}
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;min-height:100vh;}
-.app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;}
 .topbar{display:flex;align-items:center;gap:12px;padding:0 16px;height:48px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .topbar-logo{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .topbar-logo span{opacity:.4;}
@@ -20,6 +22,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .dot.live{background:var(--green);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.api-wrap{display:flex;align-items:center;gap:8px;}
+.api-toggle{display:none;}
 .mode-btn{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .mode-btn.auto{background:#dcfce7;color:var(--green);}
 .mode-btn.auto:hover{background:#bbf7d0;}
@@ -33,27 +37,29 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .btn.danger{background:var(--red);color:#fff;border-color:var(--red);}
 .btn.sm{padding:3px 8px;font-size:11px;}
 .btn:disabled{opacity:.4;cursor:not-allowed;}
-.body{display:flex;flex:1;overflow:hidden;}
+.body{display:flex;flex:1;overflow:hidden;min-height:0;}
 .sidenav{width:180px;flex-shrink:0;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;padding:12px 0;}
 .nav-item{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);border-left:2px solid transparent;transition:all .12s;user-select:none;}
 .nav-item:hover{color:var(--text);background:var(--bg);}
 .nav-item.active{color:var(--text);border-left-color:var(--text);background:var(--bg);}
 .nav-icon{font-size:14px;width:18px;text-align:center;}
 .nav-section{padding:16px 16px 4px;font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--border2);text-transform:uppercase;}
-.content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;}
+.content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0;}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
-.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
+.panel-header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--border);}
 .panel-title{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
 .panel-actions{display:flex;gap:6px;}
 .stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);min-width:0;}
 .stat-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.stat-value{font-family:var(--mono);font-size:20px;font-weight:500;line-height:1;}
+.stat-value{font-family:var(--mono);font-size:20px;font-weight:500;line-height:1;overflow-wrap:anywhere;}
 .stat-value.green{color:var(--green);}
 .stat-value.red{color:var(--red);}
 .stat-value.orange{color:var(--orange);}
 .stat-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px;}
-.tbl{width:100%;border-collapse:collapse;}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tbl{width:100%;min-width:720px;border-collapse:collapse;}
+#page-positions .tbl{min-width:1050px;}
 .tbl th{text-align:left;padding:8px 14px;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);background:var(--bg);white-space:nowrap;}
 .tbl td{padding:9px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;vertical-align:middle;}
 .tbl tr:last-child td{border-bottom:none;}
@@ -70,9 +76,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .log-warn{color:#e8c274;}
 .log-ok{color:#74e89a;}
 .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;}
-.field{display:flex;flex-direction:column;gap:5px;}
+.cfg-note{grid-column:1/-1;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.6;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0;}
 .field label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-.field input,.field select{font-family:var(--mono);font-size:13px;border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;background:var(--bg);color:var(--text);outline:none;}
+.field input,.field select{font-family:var(--mono);font-size:13px;border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;background:var(--bg);color:var(--text);outline:none;width:100%;min-width:0;}
 .field input:focus,.field select:focus{border-color:var(--accent);}
 .empty{padding:40px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);}
 .toast-area{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:999;}
@@ -80,9 +87,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .toast.ok{background:var(--green);}
 .toast.err{background:var(--red);}
 @keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
-@media(max-width:1200px){.stats-row{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:900px){.sidenav{display:none;}.stats-row{grid-template-columns:repeat(2,1fr);}}
-.page{display:none;}
+.page{display:none;min-width:0;}
 .page.active{display:flex;flex-direction:column;gap:16px;}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -90,26 +95,124 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 .pending-card-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);}
 .pending-card-body{padding:14px 16px;}
 .pending-card-actions{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:6px;}
-.hint-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:2;}
-.price-preview{background:var(--bg);border-radius:var(--radius);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9;min-height:78px;}
+.hint-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:2;overflow-wrap:anywhere;}
+.price-preview{background:var(--bg);border-radius:var(--radius);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9;min-height:78px;overflow-wrap:anywhere;}
+
+/* ── helper layout classes ─────────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.g2.gap16{gap:16px;}
+.btn-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.vsep{width:1px;height:20px;background:var(--border);}
+.close-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Laptop kecil */
+@media(max-width:1200px){.stats-row{grid-template-columns:repeat(3,1fr);}}
+
+/* Tablet & HP: sidebar jadi tab bar di bawah */
+@media(max-width:900px){
+  .topbar{flex-wrap:wrap;height:auto;min-height:48px;padding-top:calc(6px + env(safe-area-inset-top));padding-bottom:6px;padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right));gap:8px;}
+  .topbar-sep{display:none;}
+  #lastUpdate{display:none;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+
+  .body{flex-direction:column;}
+  .content{order:1;padding:14px;gap:14px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+  .sidenav{order:2;width:auto;flex-direction:row;padding:0 0 env(safe-area-inset-bottom);border-right:none;border-top:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+  .sidenav::-webkit-scrollbar{display:none;}
+  .nav-section{display:none;}
+  .nav-item{position:relative;flex:1 0 auto;min-width:68px;flex-direction:column;justify-content:center;text-align:center;gap:2px;padding:7px 10px;font-size:10px;white-space:nowrap;border-left:none;border-top:2px solid transparent;}
+  .nav-item.active{border-left-color:transparent;border-top-color:var(--text);}
+  .nav-icon{font-size:17px;width:auto;line-height:1.2;}
+  .nav-item .badge{position:absolute;top:3px;right:12px;margin-left:0!important;padding:1px 5px;}
+
+  .toast-area{left:12px;right:12px;bottom:calc(66px + env(safe-area-inset-bottom));}
+  .toast{max-width:none;}
+}
+
+/* HP */
+@media(max-width:640px){
+  /* topbar: baris 1 = logo, status, mode, tombol | baris 2 = info mode/leverage */
+  .topbar-right{display:contents;}
+  .topbar-logo{order:1;}
+  .topbar>.topbar-status:nth-of-type(1){order:2;}
+  .mode-btn{order:3;margin-left:auto;padding:6px 12px;}
+  .api-toggle{display:inline-block;order:4;}
+  .refresh-btn{order:5;}
+  .topbar-meta{order:6;flex:1 1 100%;font-size:10px;}
+  .api-wrap{display:none;order:7;flex:1 1 100%;}
+  .topbar.show-api .api-wrap{display:flex;}
+  .api-wrap .api-input{flex:1;width:auto;min-width:0;}
+  #connLabel{display:none;}
+
+  .content{padding:12px;gap:12px;}
+  .stat-card{padding:12px;}
+  .stat-value{font-size:17px;}
+  .panel-header{padding:10px 12px;}
+
+  /* form lebih nyaman disentuh (font 16px mencegah auto-zoom iOS) */
+  .field input,.field select,.api-input{font-size:16px;padding:9px 10px;}
+  .btn{min-height:38px;padding:8px 14px;font-size:13px;}
+  .btn.sm{min-height:34px;padding:6px 12px;font-size:12px;}
+
+  .g2{grid-template-columns:1fr;}
+  .btn-row .vsep{display:none;}
+  .btn-row .btn{flex:1 1 auto;}
+  .close-row .field{flex:1 1 100%!important;width:auto!important;}
+  .close-row .btn{flex:1 1 100%;}
+  .config-grid{padding:12px;gap:10px;}
+
+  .pending-card-actions .btn{flex:1;}
+  .log-box{height:calc(100dvh - 300px);min-height:240px;font-size:10px;padding:10px;}
+
+  /* tabel → kartu */
+  .tbl-wrap{overflow:visible;}
+  .tbl,#page-positions .tbl{min-width:0;}
+  .tbl,.tbl tbody{display:block;width:100%;}
+  .tbl thead{display:none;}
+  .tbl tr{display:block;padding:10px 12px;border-bottom:1px solid var(--border);}
+  .tbl tr:last-child{border-bottom:none;}
+  .tbl td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 0;border-bottom:none;text-align:right;font-size:12px;}
+  .tbl td::before{content:attr(data-label);font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;flex-shrink:0;}
+  .tbl td[data-label="Symbol"]{justify-content:flex-start;font-size:15px;padding-bottom:6px;}
+  .tbl td[data-label="Symbol"]::before,.tbl td[data-label="Action"]::before{display:none;}
+  .tbl td[data-label="Action"]{justify-content:flex-end;padding-top:8px;}
+  .tbl td[data-label="Action"] .btn{flex:1;}
+  .tbl td[data-label="Opened"]{display:none;}
+  .tbl td[colspan]{display:block;text-align:left;padding:8px 0;}
+  .tbl td[colspan]::before{display:none;}
+  .tbl td.empty{text-align:center;padding:28px 0;}
+  .tbl tr:hover td{background:transparent;}
+}
+
+/* HP sempit */
+@media(max-width:420px){
+  .g3{grid-template-columns:1fr;}
+  .config-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="topbar">
+<header class="topbar" id="topbar">
   <div class="topbar-logo"><span>▣</span> FUTURES BOT <span>/ USDT-M</span></div>
   <div class="topbar-sep"></div>
   <div class="topbar-status"><div class="dot" id="connDot"></div><span id="connLabel">Connecting...</span></div>
   <div class="topbar-sep"></div>
-  <div class="topbar-status"><span id="modeLabel">—</span></div>
-  <div class="topbar-sep"></div>
-  <div class="topbar-status">Lev: <b id="levLabel">—</b> | <span id="marginLabel">—</span></div>
+  <div class="topbar-status topbar-meta"><span id="modeLabel">—</span><span>·</span><span>Lev <b id="levLabel">—</b></span><span>·</span><span id="marginLabel">—</span></div>
   <div class="topbar-sep"></div>
   <button class="mode-btn auto" id="modeToggleBtn" onclick="toggleMode()"><span id="modeIcon">⚡</span> <span id="modeTxt">AUTO</span></button>
   <div class="topbar-right">
-    <input class="api-input" id="apiUrl" placeholder="API URL (kosong = origin sama)">
-    <button class="btn primary" onclick="connect()">Connect</button>
-    <button class="btn" onclick="refreshAll()"><span id="refreshIcon">↻</span></button>
+    <div class="api-wrap">
+      <input class="api-input" id="apiUrl" placeholder="API URL (kosong = origin sama)">
+      <button class="btn primary" onclick="connect()">Connect</button>
+    </div>
+    <button class="btn api-toggle" onclick="toggleApi()" title="API URL">🔗</button>
+    <button class="btn refresh-btn" onclick="refreshAll()"><span id="refreshIcon">↻</span></button>
     <span style="font-family:var(--mono);font-size:11px;color:var(--muted)" id="lastUpdate"></span>
   </div>
 </header>
@@ -128,7 +231,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <div class="nav-section">Settings</div>
   <div class="nav-item" onclick="showPage('config')"><span class="nav-icon">⚙</span> Config</div>
 </nav>
-<main class="content">
+<main class="content" id="content">
 
 <!-- OVERVIEW -->
 <div class="page active" id="page-overview">
@@ -145,17 +248,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
       <div class="panel-title">◎ Open Positions</div>
       <div class="panel-actions"><button class="btn sm danger" onclick="closeAll()">Close All</button><button class="btn sm" onclick="showPage('positions')">View All →</button></div>
     </div>
+    <div class="tbl-wrap">
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Side</th><th>Entry</th><th>Current</th><th>PnL %</th><th>PnL USDT</th><th>Liq Dist</th><th>Status</th><th>Hold</th><th>Action</th></tr></thead>
       <tbody id="ov-pos-body"><tr><td colspan="10" class="empty">Tidak ada posisi terbuka</td></tr></tbody>
     </table>
+    </div>
   </div>
   <div class="panel" id="pending-panel-mini" style="display:none">
     <div class="panel-header"><div class="panel-title">◷ Pending Approval</div><div class="panel-actions"><button class="btn sm" onclick="showPage('pending')">View All →</button></div></div>
+    <div class="tbl-wrap">
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Side</th><th>Price</th><th>Change</th><th>SL Ref</th><th>Sisa</th><th>Action</th></tr></thead>
       <tbody id="ov-pending-body"></tbody>
     </table>
+    </div>
   </div>
 </div>
 
@@ -163,10 +270,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 <div class="page" id="page-positions">
   <div class="panel">
     <div class="panel-header"><div class="panel-title">◎ Positions Detail</div><div class="panel-actions"><button class="btn sm" onclick="refreshAll()">↻ Refresh</button></div></div>
+    <div class="tbl-wrap">
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Side</th><th>Lev</th><th>Entry</th><th>Current</th><th>PnL %</th><th>PnL USDT</th><th>SL</th><th>Liq Price</th><th>Liq Dist</th><th>Status</th><th>Opened</th><th>Action</th></tr></thead>
       <tbody id="pos-body"><tr><td colspan="13" class="empty">Tidak ada posisi terbuka</td></tr></tbody>
     </table>
+    </div>
   </div>
 </div>
 
@@ -184,7 +293,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <!-- Format hint card -->
   <div class="panel">
     <div class="panel-header"><div class="panel-title">📖 Format — Berlaku untuk semua coin di Bitget Futures</div></div>
-    <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="g2 gap16" style="padding:14px 16px">
       <div class="hint-box">
         <b style="color:var(--green)">📈 /long SYMBOL [args]</b><br>
         <code>/long ETHUSDT</code> — market, SL/TP auto<br>
@@ -202,20 +311,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
     </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+  <div class="g2 gap16">
     <!-- LONG form -->
     <div class="panel">
       <div class="panel-header"><div class="panel-title" style="color:var(--green)">📈 Open Long</div></div>
-      <div style="padding:18px;display:flex;flex-direction:column;gap:12px">
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
         <div class="field">
           <label>Symbol (semua coin Bitget Futures)</label>
-          <input id="long-symbol" placeholder="BTCUSDT / ETHUSDT / SOLUSDT / ..." style="text-transform:uppercase" oninput="previewPrice('long')">
+          <input id="long-symbol" placeholder="BTCUSDT / ETHUSDT / SOLUSDT / ..." style="text-transform:uppercase" autocapitalize="characters" autocomplete="off" oninput="previewPrice('long')">
         </div>
         <div id="long-preview" class="price-preview">Ketik symbol untuk preview harga...</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-          <div class="field"><label>Entry <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-entry" type="number" step="any" placeholder="market"></div>
-          <div class="field"><label>SL <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-sl" type="number" step="any" placeholder="auto"></div>
-          <div class="field"><label>TP1 <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-tp" type="number" step="any" placeholder="auto"></div>
+        <div class="g3">
+          <div class="field"><label>Entry <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-entry" type="number" step="any" inputmode="decimal" placeholder="market"></div>
+          <div class="field"><label>SL <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-sl" type="number" step="any" inputmode="decimal" placeholder="auto"></div>
+          <div class="field"><label>TP1 <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="long-tp" type="number" step="any" inputmode="decimal" placeholder="auto"></div>
         </div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">SL Long harus di bawah harga entry</div>
         <button class="btn success" style="width:100%" onclick="doManualOpen('long')">📈 Open LONG</button>
@@ -224,16 +333,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
     <!-- SHORT form -->
     <div class="panel">
       <div class="panel-header"><div class="panel-title" style="color:var(--red)">📉 Open Short</div></div>
-      <div style="padding:18px;display:flex;flex-direction:column;gap:12px">
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
         <div class="field">
           <label>Symbol (semua coin Bitget Futures)</label>
-          <input id="short-symbol" placeholder="BTCUSDT / ETHUSDT / XRPUSDT / ..." style="text-transform:uppercase" oninput="previewPrice('short')">
+          <input id="short-symbol" placeholder="BTCUSDT / ETHUSDT / XRPUSDT / ..." style="text-transform:uppercase" autocapitalize="characters" autocomplete="off" oninput="previewPrice('short')">
         </div>
         <div id="short-preview" class="price-preview">Ketik symbol untuk preview harga...</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-          <div class="field"><label>Entry <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-entry" type="number" step="any" placeholder="market"></div>
-          <div class="field"><label>SL <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-sl" type="number" step="any" placeholder="auto"></div>
-          <div class="field"><label>TP1 <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-tp" type="number" step="any" placeholder="auto"></div>
+        <div class="g3">
+          <div class="field"><label>Entry <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-entry" type="number" step="any" inputmode="decimal" placeholder="market"></div>
+          <div class="field"><label>SL <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-sl" type="number" step="any" inputmode="decimal" placeholder="auto"></div>
+          <div class="field"><label>TP1 <span style="font-weight:400;opacity:.5">(opt)</span></label><input id="short-tp" type="number" step="any" inputmode="decimal" placeholder="auto"></div>
         </div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">SL Short harus di atas harga entry</div>
         <button class="btn danger" style="width:100%" onclick="doManualOpen('short')">📉 Open SHORT</button>
@@ -245,12 +354,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
   <div class="panel">
     <div class="panel-header"><div class="panel-title">🔒 Close Position</div></div>
     <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
-      <div style="display:flex;gap:10px;align-items:flex-end">
-        <div class="field" style="flex:1"><label>Symbol</label><input id="close-symbol" placeholder="BTCUSDT / ETHUSDT / ..." style="text-transform:uppercase"></div>
+      <div class="close-row">
+        <div class="field" style="flex:1"><label>Symbol</label><input id="close-symbol" placeholder="BTCUSDT / ETHUSDT / ..." style="text-transform:uppercase" autocapitalize="characters" autocomplete="off"></div>
         <div class="field" style="width:130px"><label>Side</label><select id="close-side"><option value="long">📈 Long</option><option value="short">📉 Short</option></select></div>
         <button class="btn danger" onclick="doManualClose()">Close</button>
       </div>
-      <div id="close-pos-list" style="font-family:var(--mono);font-size:11px;color:var(--muted)">— Pilih dari posisi terbuka —</div>
+      <div id="close-pos-list" style="font-family:var(--mono);font-size:11px;color:var(--muted);line-height:2">— Pilih dari posisi terbuka —</div>
     </div>
   </div>
 </div>
@@ -259,9 +368,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 <div class="page" id="page-screen">
   <div class="panel">
     <div class="panel-header"><div class="panel-title">⊙ Signal Scanner</div></div>
-    <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
       <div id="mode-banner" style="padding:12px 16px;border-radius:var(--radius);border:1px solid;font-size:12px;font-weight:500;"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="g2">
         <div class="panel" style="padding:20px;text-align:center">
           <div style="font-size:28px;margin-bottom:10px">📈</div>
           <div style="font-weight:600;margin-bottom:6px">Long Screener</div>
@@ -275,9 +384,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
           <button class="btn danger" style="width:100%" onclick="doScreen('short')">▶ Run Short</button>
         </div>
       </div>
-      <div class="panel" style="padding:14px;display:flex;align-items:center;gap:12px">
+      <div class="panel btn-row" style="padding:14px">
         <button class="btn primary" onclick="doScreen('both')">⊙ Long + Short</button>
-        <div style="width:1px;height:20px;background:var(--border)"></div>
+        <div class="vsep"></div>
         <button class="btn" onclick="doManage()">⚙ Management Cycle</button>
       </div>
     </div>
@@ -288,10 +397,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 <div class="page" id="page-history">
   <div class="panel">
     <div class="panel-header"><div class="panel-title">≡ Trade History (posisi yang sudah close)</div><div class="panel-actions"><button class="btn sm" onclick="loadHistory()">↻ Refresh</button></div></div>
+    <div class="tbl-wrap">
     <table class="tbl">
       <thead><tr><th>Jam</th><th>Symbol</th><th>Side</th><th>Entry</th><th>Exit</th><th>PnL %</th><th>PnL USDT</th><th>Alasan</th></tr></thead>
       <tbody id="history-body"><tr><td colspan="8" class="empty">Loading...</td></tr></tbody>
     </table>
+    </div>
   </div>
 </div>
 
@@ -310,14 +421,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 <div class="page" id="page-config">
   <div class="panel">
     <div class="panel-header"><div class="panel-title">⚡ Execute Mode</div></div>
-    <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div id="card-auto" onclick="setMode(true)" style="border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:center">
+        <div id="card-auto" onclick="setMode(true)" style="border:2px solid var(--border);border-radius:var(--radius);padding:14px 10px;cursor:pointer;text-align:center">
           <div style="font-size:24px;margin-bottom:8px">⚡</div>
           <div style="font-weight:600;font-size:13px;margin-bottom:4px">Auto Execute</div>
           <div style="color:var(--muted);font-size:11px">Signal langsung dieksekusi otomatis</div>
         </div>
-        <div id="card-manual" onclick="setMode(false)" style="border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:center">
+        <div id="card-manual" onclick="setMode(false)" style="border:2px solid var(--border);border-radius:var(--radius);padding:14px 10px;cursor:pointer;text-align:center">
           <div style="font-size:24px;margin-bottom:8px">📋</div>
           <div style="font-weight:600;font-size:13px;margin-bottom:4px">Manual Approval</div>
           <div style="color:var(--muted);font-size:11px">Konfirmasi via Telegram</div>
@@ -347,6 +458,8 @@ let API=(_savedApi&&!/localhost|127\.0\.0\.1/.test(_savedApi))?_savedApi:window.
 let _data=null,_autoRefresh=null,_autoLog=true,_logTimer=null,_fullConfig=null,_isAutoMode=true;
 
 document.addEventListener('DOMContentLoaded',()=>{document.getElementById('apiUrl').value=API;connect();});
+
+function toggleApi(){document.getElementById('topbar').classList.toggle('show-api');}
 
 function connect(){
   const v=document.getElementById('apiUrl').value.trim().replace(/\/$/,'');
@@ -409,8 +522,8 @@ function posRow(p,mini=false){
   const holdH=((Date.now()-new Date(p.openedAt))/3600000).toFixed(1);
   const side=isLong?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>';
   const status=[p.hasBEP&&'<span class="badge green">BEP</span>',p.trailingActive&&'<span class="badge blue">TRAIL</span>'].filter(Boolean).join(' ')||'<span class="badge gray">ACTIVE</span>';
-  if(mini)return`<tr><td><b>${p.symbol}</b></td><td>${side}</td><td>${p.entryPrice}</td><td>${p.currentPrice??'—'}</td><td><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2)??'—'}%</span></td><td style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2)??'—'}</td><td><span class="badge ${liqCls}">${p.liqDist?.toFixed(1)??'—'}%</span></td><td>${status}</td><td>${holdH}h</td><td><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td></tr>`;
-  return`<tr><td><b>${p.symbol}</b></td><td>${side}</td><td><span class="badge gray">${p.leverage}x</span></td><td>${p.entryPrice}</td><td>${p.currentPrice??'—'}</td><td><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2)??'—'}%</span></td><td style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2)??'—'}</td><td style="color:var(--red)">${p.slPrice?.toFixed(6)??'—'}</td><td style="color:var(--orange)">${p.liqPrice?.toFixed(6)??'—'}</td><td><span class="badge ${liqCls}">${p.liqDist?.toFixed(1)??'—'}%</span></td><td>${status}</td><td style="font-size:10px">${new Date(p.openedAt).toLocaleString('id-ID')}</td><td><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td></tr>`;
+  if(mini)return`<tr><td data-label="Symbol"><b>${p.symbol}</b></td><td data-label="Side">${side}</td><td data-label="Entry">${p.entryPrice}</td><td data-label="Current">${p.currentPrice??'—'}</td><td data-label="PnL %"><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2)??'—'}%</span></td><td data-label="PnL USDT" style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2)??'—'}</td><td data-label="Liq Dist"><span class="badge ${liqCls}">${p.liqDist?.toFixed(1)??'—'}%</span></td><td data-label="Status">${status}</td><td data-label="Hold">${holdH}h</td><td data-label="Action"><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td></tr>`;
+  return`<tr><td data-label="Symbol"><b>${p.symbol}</b></td><td data-label="Side">${side}</td><td data-label="Lev"><span class="badge gray">${p.leverage}x</span></td><td data-label="Entry">${p.entryPrice}</td><td data-label="Current">${p.currentPrice??'—'}</td><td data-label="PnL %"><span class="badge ${cls}">${sign}${p.pnlPct?.toFixed(2)??'—'}%</span></td><td data-label="PnL USDT" style="color:var(--${cls})">${sign}${p.pnlUsdt?.toFixed(2)??'—'}</td><td data-label="SL" style="color:var(--red)">${p.slPrice?.toFixed(6)??'—'}</td><td data-label="Liq Price" style="color:var(--orange)">${p.liqPrice?.toFixed(6)??'—'}</td><td data-label="Liq Dist"><span class="badge ${liqCls}">${p.liqDist?.toFixed(1)??'—'}%</span></td><td data-label="Status">${status}</td><td data-label="Opened" style="font-size:10px">${new Date(p.openedAt).toLocaleString('id-ID')}</td><td data-label="Action"><button class="btn sm danger" onclick="closePos('${p.symbol}','${p.side}')">Close</button></td></tr>`;
 }
 
 function renderPositionsOverview(positions){const e=Object.values(positions||{});document.getElementById('ov-pos-body').innerHTML=e.length?e.map(p=>posRow(p,true)).join(''):'<tr><td colspan="10" class="empty">Tidak ada posisi terbuka</td></tr>';}
@@ -419,7 +532,7 @@ function renderPositionsPage(positions){const e=Object.values(positions||{});doc
 function renderPendingQueue(pending){
   const ov=document.getElementById('ov-pending-body');
   if(ov)ov.innerHTML=(pending||[]).map(p=>{const isLong=p.side==='long',chgCls=p.change24h>=0?'green':'red',chg=p.change24h>=0?'+'+p.change24h?.toFixed(2)+'%':p.change24h?.toFixed(2)+'%';
-    return`<tr><td><b>${p.symbol}</b></td><td>${isLong?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>'}</td><td>${p.lastPrice??'—'}</td><td><span class="badge ${chgCls}">${chg}</span></td><td style="color:var(--red)">${p.slPrice?.toFixed(6)??'—'}</td><td>${p.minsLeft}m</td><td><div style="display:flex;gap:4px"><button class="btn sm success" onclick="approvePos('${p.symbol}','${p.side}')">✓</button><button class="btn sm danger" onclick="skipPos('${p.symbol}','${p.side}')">Skip</button></div></td></tr>`;}).join('');
+    return`<tr><td data-label="Symbol"><b>${p.symbol}</b></td><td data-label="Side">${isLong?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>'}</td><td data-label="Price">${p.lastPrice??'—'}</td><td data-label="Change"><span class="badge ${chgCls}">${chg}</span></td><td data-label="SL Ref" style="color:var(--red)">${p.slPrice?.toFixed(6)??'—'}</td><td data-label="Sisa">${p.minsLeft}m</td><td data-label="Action"><div style="display:flex;gap:4px"><button class="btn sm success" onclick="approvePos('${p.symbol}','${p.side}')">✓</button><button class="btn sm danger" onclick="skipPos('${p.symbol}','${p.side}')">Skip</button></div></td></tr>`;}).join('');
   const c=document.getElementById('pending-cards');if(!c)return;
   if(!pending?.length){c.innerHTML='<div class="empty">Tidak ada kandidat pending</div>';return;}
   c.innerHTML=pending.map(p=>{const isLong=p.side==='long',chgCls=p.change24h>=0?'green':'red',chg=p.change24h>=0?'+'+p.change24h?.toFixed(2)+'%':p.change24h?.toFixed(2)+'%';
@@ -431,7 +544,7 @@ function updateClosePosList(positions){
   const el=document.getElementById('close-pos-list');if(!el)return;
   const e=Object.values(positions||{});
   if(!e.length){el.textContent='— Tidak ada posisi terbuka —';return;}
-  el.innerHTML='Klik untuk isi form: '+e.map(p=>`<span onclick="fillCloseForm('${p.symbol}','${p.side}')" style="cursor:pointer;margin:0 4px;color:var(--blue);text-decoration:underline">${p.symbol} ${p.side}</span>`).join(' | ');
+  el.innerHTML='Klik untuk isi form: '+e.map(p=>`<span onclick="fillCloseForm('${p.symbol}','${p.side}')" style="cursor:pointer;margin:0 4px;color:var(--blue);text-decoration:underline;white-space:nowrap">${p.symbol} ${p.side}</span>`).join(' | ');
 }
 function fillCloseForm(s,side){document.getElementById('close-symbol').value=s;document.getElementById('close-side').value=side;}
 
@@ -457,7 +570,7 @@ async function previewPrice(side){
         const cfg=_data?.config||{},lev=cfg.leverage||5,budget=cfg.budgetPerTrade||10,slPct=cfg.stopLossPct||3,tpPct=cfg.takeProfitPct||5;
         const sl=side==='long'?res.price*(1-slPct/100):res.price*(1+slPct/100);
         const tp=side==='long'?res.price*(1+tpPct/100):res.price*(1-tpPct/100);
-        pre.innerHTML='💰 Price : <b>'+res.price+'</b><br>📦 Size  : '+budget+' USDT × '+lev+'x = '+(budget*lev)+' USDT<br>🛑 SL def: <span style="color:var(--red)">'+sl.toFixed(6)+'</span> ('+(side==='long'?'-':'+')+slPct+'%)<br>🎯 TP def: <span style="color:var(--green)">'+tp.toFixed(6)+'</span> ('+(side==='long'?'+':'-')+tpPct+'%)';
+        pre.innerHTML='💰 Price : <b>'+res.price+'</b><br>📦 Size  : '+budget+' USDT × '+lev+'x = '+(budget*lev)+' USDT<br>🛑 SL def: <span style="color:var(--red)">'+sl.toFixed(6)+'</span> ('+(side==='long'?'-':'+')+slPct+'% harga)<br>🎯 TP def: <span style="color:var(--green)">'+tp.toFixed(6)+'</span> ('+(side==='long'?'+':'-')+tpPct+'% harga)';
         const si=document.getElementById(side+'-sl'),ti=document.getElementById(side+'-tp');
         if(si&&!si.value)si.value=sl.toFixed(6);
         if(ti&&!ti.value)ti.value=tp.toFixed(6);
@@ -517,7 +630,7 @@ async function loadHistory(){
     html+=list.map(t=>{
       const up=(t.pnlUsdt||0)>=0,cls=up?'green':'red',sg2=up?'+':'';
       const side=t.side==='long'?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>';
-      return`<tr><td style="font-size:10px">${new Date(t.closedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</td><td><b>${t.symbol}</b></td><td>${side}</td><td>${t.entryPrice}</td><td>${t.exitPrice}</td><td><span class="badge ${cls}">${sg2}${(t.pnlPct||0).toFixed(2)}%</span></td><td style="color:var(--${cls})">${sg2}${(t.pnlUsdt||0).toFixed(2)}</td><td><span class="badge gray">${reasons[t.reason]||t.reason||'—'}</span></td></tr>`;
+      return`<tr><td data-label="Jam" style="font-size:10px">${new Date(t.closedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</td><td data-label="Symbol"><b>${t.symbol}</b></td><td data-label="Side">${side}</td><td data-label="Entry">${t.entryPrice}</td><td data-label="Exit">${t.exitPrice}</td><td data-label="PnL %"><span class="badge ${cls}">${sg2}${(t.pnlPct||0).toFixed(2)}%</span></td><td data-label="PnL USDT" style="color:var(--${cls})">${sg2}${(t.pnlUsdt||0).toFixed(2)}</td><td data-label="Alasan"><span class="badge gray">${reasons[t.reason]||t.reason||'—'}</span></td></tr>`;
     }).join('');
   }
   const all=r.trades.reduce((s,t)=>s+(t.pnlUsdt||0),0);
@@ -538,27 +651,29 @@ async function loadConfig(){
   const r=await apiFetch('/api/config');if(!r.ok)return;_fullConfig=r.config;
   const cfg=r.config,t=cfg.trading||{},m=cfg.management||{},lc=cfg.screening?.long||{},sc=cfg.screening?.short||{},u=cfg.screening?.utbot||{},s=cfg.schedule||{};
   document.getElementById('config-grid').innerHTML=`
-    <div class="field"><label>Budget/Trade (USDT)</label><input id="cfg-budget" type="number" value="${t.budgetPerTrade||10}"></div>
-    <div class="field"><label>Leverage</label><input id="cfg-leverage" type="number" value="${t.leverage||5}"></div>
+    <div class="cfg-note">ℹ️ Semua persen TP / SL / Trailing / Liq di bawah = <b>% gerakan harga</b>, bukan % margin. Contoh: SL 3% pada leverage 5x = rugi 15% margin. Trailing hanya aktif setelah TP1 (kecuali <code>activateAfterTP1</code> = false di user-config.json).</div>
+    <div class="field"><label>Budget/Trade (USDT)</label><input id="cfg-budget" type="number" inputmode="decimal" value="${t.budgetPerTrade||10}"></div>
+    <div class="field"><label>Leverage</label><input id="cfg-leverage" type="number" inputmode="decimal" value="${t.leverage||5}"></div>
     <div class="field"><label>Margin Mode</label><select id="cfg-margin"><option value="isolated" ${t.marginMode==='isolated'?'selected':''}>Isolated</option><option value="cross" ${t.marginMode==='cross'?'selected':''}>Cross</option></select></div>
-    <div class="field"><label>Approval Timeout (menit)</label><input id="cfg-timeout" type="number" value="${t.approvalTimeoutMin||30}"></div>
-    <div class="field"><label>Max Long Positions</label><input id="cfg-maxlong" type="number" value="${t.maxLongPositions||3}"></div>
-    <div class="field"><label>Max Short Positions</label><input id="cfg-maxshort" type="number" value="${t.maxShortPositions||3}"></div>
-    <div class="field"><label>Take Profit % (TP1)</label><input id="cfg-tp" type="number" step="0.1" value="${m.takeProfitPct||5}"></div>
-    <div class="field"><label>Stop Loss %</label><input id="cfg-sl" type="number" step="0.1" value="${Math.abs(m.stopLossPct||3)}"></div>
-    <div class="field"><label>Trailing Callback %</label><input id="cfg-trail" type="number" step="0.1" value="${m.trailingStop?.trailPct||1.5}"></div>
-    <div class="field"><label>Activate Trailing at %</label><input id="cfg-trail-act" type="number" step="0.1" value="${m.trailingStop?.activateAtProfitPct||3}"></div>
-    <div class="field"><label>Max Hold Hours</label><input id="cfg-maxhold" type="number" value="${m.maxHoldHours||48}"></div>
-    <div class="field"><label>Liquidation Buffer %</label><input id="cfg-liqbuf" type="number" value="${m.liquidationBufferPct||15}"></div>
-    <div class="field"><label>Long Min Gainer %</label><input id="cfg-long-min" type="number" step="0.1" value="${lc.minGainPct||5}"></div>
-    <div class="field"><label>Long Max Gainer %</label><input id="cfg-long-max" type="number" step="0.1" value="${lc.maxGainPct||20}"></div>
-    <div class="field"><label>Short Min Loss %</label><input id="cfg-short-min" type="number" step="0.1" value="${sc.minLossPct||3}"></div>
-    <div class="field"><label>Short Max Loss %</label><input id="cfg-short-max" type="number" step="0.1" value="${sc.maxLossPct||20}"></div>
-    <div class="field"><label>Min Volume 24h (USD)</label><input id="cfg-vol" type="number" value="${lc.minVolume24h||10000000}"></div>
-    <div class="field"><label>UTBot Key Value</label><input id="cfg-utbot-key" type="number" step="0.5" value="${u.keyValue||2}"></div>
-    <div class="field"><label>UTBot ATR Period</label><input id="cfg-utbot-atr" type="number" value="${u.atrPeriod||10}"></div>
-    <div class="field"><label>Screening Interval (menit)</label><input id="cfg-screen-int" type="number" value="${s.screeningIntervalMin||30}"></div>
-    <div class="field"><label>Management Interval (menit)</label><input id="cfg-manage-int" type="number" value="${s.managementIntervalMin||3}"></div>`;
+    <div class="field"><label>Approval Timeout (menit)</label><input id="cfg-timeout" type="number" inputmode="numeric" value="${t.approvalTimeoutMin||30}"></div>
+    <div class="field"><label>Max Long Positions</label><input id="cfg-maxlong" type="number" inputmode="numeric" value="${t.maxLongPositions||3}"></div>
+    <div class="field"><label>Max Short Positions</label><input id="cfg-maxshort" type="number" inputmode="numeric" value="${t.maxShortPositions||3}"></div>
+    <div class="field"><label>Take Profit TP1 (% harga)</label><input id="cfg-tp" type="number" step="0.1" inputmode="decimal" value="${m.takeProfitPct||5}"></div>
+    <div class="field"><label>Stop Loss (% harga)</label><input id="cfg-sl" type="number" step="0.1" inputmode="decimal" value="${Math.abs(m.stopLossPct||3)}"></div>
+    <div class="field"><label>Trailing Callback (% harga)</label><input id="cfg-trail" type="number" step="0.1" inputmode="decimal" value="${m.trailingStop?.trailPct||1.5}"></div>
+    <div class="field"><label>Trailing Dini (% harga)</label><input id="cfg-trail-act" type="number" step="0.1" inputmode="decimal" value="${m.trailingStop?.activateAtProfitPct||2}"></div>
+    <div class="field"><label>Max Hold Hours</label><input id="cfg-maxhold" type="number" inputmode="numeric" value="${m.maxHoldHours||48}"></div>
+    <div class="field"><label>Liq Buffer (% harga)</label><input id="cfg-liqbuf" type="number" inputmode="numeric" value="${m.liquidationBufferPct||15}"></div>
+    <div class="field"><label>Long Min Gainer %</label><input id="cfg-long-min" type="number" step="0.1" inputmode="decimal" value="${lc.minGainPct||5}"></div>
+    <div class="field"><label>Long Max Gainer %</label><input id="cfg-long-max" type="number" step="0.1" inputmode="decimal" value="${lc.maxGainPct||20}"></div>
+    <div class="field"><label>Short Min Loss %</label><input id="cfg-short-min" type="number" step="0.1" inputmode="decimal" value="${sc.minLossPct||3}"></div>
+    <div class="field"><label>Short Max Loss %</label><input id="cfg-short-max" type="number" step="0.1" inputmode="decimal" value="${sc.maxLossPct||20}"></div>
+    <div class="field"><label>Min Volume 24h (USD)</label><input id="cfg-vol" type="number" inputmode="numeric" value="${lc.minVolume24h||10000000}"></div>
+    <div class="field"><label>UTBot Key Value</label><input id="cfg-utbot-key" type="number" step="0.5" inputmode="decimal" value="${u.keyValue||2}"></div>
+    <div class="field"><label>UTBot ATR Period</label><input id="cfg-utbot-atr" type="number" inputmode="numeric" value="${u.atrPeriod||10}"></div>
+    <div class="field"><label>Screening Interval (menit)</label><input id="cfg-screen-int" type="number" inputmode="numeric" value="${s.screeningIntervalMin||30}"></div>
+    <div class="field"><label>Management Interval (menit)</label><input id="cfg-manage-int" type="number" inputmode="numeric" value="${s.managementIntervalMin||3}"></div>
+    <div class="cfg-note">Trailing Dini hanya dipakai jika <code>activateAfterTP1</code> = false.</div>`;
   renderModeUI(t.autoExecute!==false);
 }
 
@@ -573,7 +688,10 @@ function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+name)?.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')?.includes(name))n.classList.add('active');});
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')?.includes("'"+name+"'")){n.classList.add('active');n.scrollIntoView?.({inline:'center',block:'nearest'});}
+  });
+  document.getElementById('content').scrollTop=0;
   if(name==='history')loadHistory();
   if(name==='logs'){loadLogs();if(_autoLog&&!_logTimer)_logTimer=setInterval(loadLogs,5000);}
   if(name==='config')loadConfig();
