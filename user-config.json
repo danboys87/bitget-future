@@ -38,6 +38,7 @@
     }
   },
   "management": {
+    "unitsNote": "Semua persen di bagian management = % GERAKAN HARGA (bukan % margin). Contoh: stopLossPct 3 = SL di 3% dari entry; di leverage 5x itu = rugi 15% margin.",
     "takeProfitPct": 5,
     "stopLossPct": 3,
     "slBuffer": 0.003,
@@ -49,7 +50,7 @@
     "trailingStop": {
       "enabled": true,
       "activateAfterTP1": true,
-      "activateAtProfitPct": 10,
+      "activateAtProfitPct": 2,
       "trailPct": 1.5
     },
     "maxHoldHours": 72,

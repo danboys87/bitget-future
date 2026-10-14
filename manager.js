@@ -2,10 +2,15 @@
  * Manager — Futures Bot
  * Monitor semua posisi terbuka:
  *  - Stop Loss
- *  - TP1 (partial close 50% → BEP)
- *  - Trailing Stop
+ *  - TP1 (partial close → BEP → trailing aktif)
+ *  - Trailing Stop (HANYA aktif setelah TP1, kecuali activateAfterTP1 = false)
  *  - Liquidation warning
  *  - Max Hold Time
+ *
+ * SATUAN — semua angka di user-config.json bagian "management" adalah
+ * PERSEN GERAKAN HARGA (bukan persen margin / PnL berleverage):
+ *   takeProfitPct, stopLossPct, trailPct, activateAtProfitPct, liquidationBufferPct
+ * PnL % berleverage (persen dari margin) hanya ditampilkan di log/notifikasi.
  */
 import { getCurrentPrice }     from './bitgetFutures.js';
 import { config }              from './config.js';
@@ -19,14 +24,15 @@ import { notifyClose, notifyLiquidationWarning } from './telegram.js';
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Hitung PnL % dengan leverage
+// Gerakan harga % dari entry (positif = menguntungkan). Ini satuan acuan semua
+// threshold di config.
 // ─────────────────────────────────────────────────────────────────────────────
-function calcPnlPct(position, currentPrice) {
-  const { entryPrice, side, leverage } = position;
+function calcPricePct(position, currentPrice) {
+  const { entryPrice, side } = position;
   const priceDiff = side === 'long'
     ? currentPrice - entryPrice
     : entryPrice - currentPrice;
-  return (priceDiff / entryPrice) * 100 * leverage;
+  return (priceDiff / entryPrice) * 100;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -34,7 +40,14 @@ function calcPnlPct(position, currentPrice) {
 // ─────────────────────────────────────────────────────────────────────────────
 async function evaluatePosition(pos) {
   const { symbol, side, entryPrice, slPrice, tp1Price, liqPrice, leverage } = pos;
-  const mgmt = config.management;
+  const mgmt      = config.management;
+  const trailCfg  = mgmt.trailingStop ?? {};
+
+  const trailEnabled   = trailCfg.enabled !== false;
+  const afterTP1Only   = trailCfg.activateAfterTP1 !== false; // default: true
+  const trailPct       = trailCfg.trailPct ?? 1.5;             // % harga
+  const activateAtPct  = trailCfg.activateAtProfitPct ?? 2;    // % harga (hanya dipakai jika afterTP1Only = false)
+  const tp1ClosePct    = mgmt.tp1?.closePct ?? 50;
 
   const currentPrice = await getCurrentPrice(symbol);
   if (!currentPrice) {
@@ -42,9 +55,16 @@ async function evaluatePosition(pos) {
     return;
   }
 
-  const pnlPct    = calcPnlPct(pos, currentPrice);
+  const pricePct  = calcPricePct(pos, currentPrice);   // % gerakan harga
+  const marginPct = pricePct * leverage;               // % PnL terhadap margin (info saja)
   const holdHours = (Date.now() - new Date(pos.openedAt).getTime()) / 3_600_000;
   const hasBEP    = pos.hasBEP;
+
+  // Trailing dianggap aktif:
+  //  - mode default (afterTP1Only): hanya jika TP1 sudah kena (hasBEP).
+  //    Flag trailingActive lama dari sebelum TP1 diabaikan.
+  //  - mode lama (afterTP1Only = false): ikut flag trailingActive.
+  const trailingOn = trailEnabled && (afterTP1Only ? hasBEP : (pos.trailingActive || hasBEP));
 
   // Liquidation distance %
   const liqDist = side === 'long'
@@ -53,8 +73,8 @@ async function evaluatePosition(pos) {
 
   log('manager',
     `${symbol} ${side.toUpperCase()} | price=${currentPrice} entry=${entryPrice} ` +
-    `PnL=${pnlPct.toFixed(2)}% | hold=${holdHours.toFixed(1)}h | ` +
-    `BEP=${hasBEP ? 'YES' : 'no'} | trail=${pos.trailingActive ? 'ON' : 'off'} | ` +
+    `move=${pricePct.toFixed(2)}% (margin ${marginPct.toFixed(2)}%) | hold=${holdHours.toFixed(1)}h | ` +
+    `BEP=${hasBEP ? 'YES' : 'no'} | trail=${trailingOn ? 'ON' : 'off'} | ` +
     `liqDist=${liqDist.toFixed(1)}%`
   );
 
@@ -84,46 +104,47 @@ async function evaluatePosition(pos) {
     return;
   }
 
-  // ── 2. TP1 — partial close 50% → set BEP ──────────────────────────────────
+  // ── 2. TP1 — partial close → set BEP → aktifkan trailing ──────────────────
   if (!hasBEP) {
     const tp1Hit = side === 'long'
       ? currentPrice >= tp1Price
       : currentPrice <= tp1Price;
 
     if (tp1Hit) {
-      log('manager', `🎯 TP1 hit: ${symbol} ${side} | price=${currentPrice} TP1=${tp1Price?.toFixed(6)} | Tutup 50%, set BEP`);
-      const result = await executePartialClose(symbol, side, { closePct: 50, reason: 'tp1_partial', position: pos });
+      log('manager', `🎯 TP1 hit: ${symbol} ${side} | price=${currentPrice} TP1=${tp1Price?.toFixed(6)} | Tutup ${tp1ClosePct}%, set BEP`);
+      const result = await executePartialClose(symbol, side, { closePct: tp1ClosePct, reason: 'tp1_partial', position: pos });
       if (result.success) {
         setBEP(symbol, side);
-        activateTrailing(symbol, side);
+        if (trailEnabled) {
+          activateTrailing(symbol, side);
+          // Mulai lacak peak dari harga saat TP1 (bukan dari entry)
+          updatePeakPrice(symbol, side, currentPrice);
+        }
         await notifyClose({ symbol, side, entryPrice, exitPrice: result.exitPrice, pnlPct: result.pnlPct, pnlUsdt: result.pnlUsdt, reason: 'tp1_partial', leverage });
-        log('manager', `✅ TP1 done, BEP set, trailing aktif: ${symbol} ${side}`);
+        log('manager', `✅ TP1 done, BEP set, trailing ${trailEnabled ? 'aktif' : 'nonaktif (enabled=false)'}: ${symbol} ${side}`);
       }
       return;
     }
   }
 
-  // ── 3. Aktifkan trailing jika profit >= activateAtProfitPct ───────────────
-  const activateAt = mgmt.trailingStop?.activateAtProfitPct ?? 3;
-  if (!pos.trailingActive && !hasBEP && pnlPct >= activateAt) {
-    log('manager', `🔻 Trailing aktif early: ${symbol} ${side} | PnL=${pnlPct.toFixed(2)}% >= ${activateAt}%`);
+  // ── 3. Aktivasi trailing lebih awal (HANYA jika activateAfterTP1 = false) ──
+  if (trailEnabled && !afterTP1Only && !pos.trailingActive && !hasBEP && pricePct >= activateAtPct) {
+    log('manager', `🔻 Trailing aktif early: ${symbol} ${side} | move=${pricePct.toFixed(2)}% >= ${activateAtPct}%`);
     activateTrailing(symbol, side);
+    updatePeakPrice(symbol, side, currentPrice);
   }
 
   // ── 4. Trailing Stop ───────────────────────────────────────────────────────
-  if (pos.trailingActive || hasBEP) {
+  if (trailingOn) {
     updatePeakPrice(symbol, side, currentPrice);
 
     // Baca posisi terbaru setelah update peak
-    const allPos = getAllPositions();
-    const freshPos = allPos[pos.key];
+    const freshPos = getAllPositions()[pos.key];
     if (!freshPos) return;
 
-    const trailPct     = mgmt.trailingStop?.trailPct ?? 1.5;
-    const peakPrice    = freshPos.peakPrice;
+    const peakPrice = freshPos.peakPrice;
 
-    // Long: drop dari peak
-    // Short: rise dari peak (peak = harga terendah)
+    // Long: drop dari peak. Short: rise dari peak (peak = harga terendah)
     const dropFromPeak = side === 'long'
       ? ((peakPrice - currentPrice) / peakPrice) * 100
       : ((currentPrice - peakPrice) / peakPrice) * 100;
