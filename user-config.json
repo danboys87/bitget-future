@@ -5,7 +5,7 @@
     "marginMode": "isolated",
     "leverage": 5,
     "budgetPerTrade": 10,
-    "maxOpenPositions": 5,
+    "maxOpenPositions": 6,
     "maxLongPositions": 3,
     "maxShortPositions": 3,
     "gasReserve": 5,
