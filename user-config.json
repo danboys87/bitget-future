@@ -49,7 +49,7 @@
     "trailingStop": {
       "enabled": true,
       "activateAfterTP1": true,
-      "activateAtProfitPct": 3,
+      "activateAtProfitPct": 10,
       "trailPct": 1.5
     },
     "maxHoldHours": 72,
