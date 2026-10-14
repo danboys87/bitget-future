@@ -11,12 +11,45 @@ import { log }      from './logger.js';
 import { logTrade } from './logger.js';
 import {
   openPosition, closePosition, recordPartialClose,
-  getPosition,
+  hasPosition, getLongPositions, getShortPositions, getAllPositions,
 } from './state.js';
 
 const isDryRun = process.env.DRY_RUN === 'true';
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Penjaga order: tolak posisi ganda & batas jumlah posisi
+// Berlaku untuk SEMUA jalur (auto, approve, /long, /short, dashboard)
+// ─────────────────────────────────────────────────────────────────────────────
+const _opening = new Set(); // key symbol_side yang sedang diproses (anti double-klik)
+
+function checkOpenAllowed(symbol, side) {
+  const cfg = config.trading;
+  const key = `${symbol}_${side}`;
+
+  if (_opening.has(key)) {
+    return `Order ${side.toUpperCase()} ${symbol} sedang diproses, tunggu sebentar`;
+  }
+  if (hasPosition(symbol, side)) {
+    return `Sudah ada posisi ${side.toUpperCase()} ${symbol} — ditolak`;
+  }
+
+  const inFlightSide  = [..._opening].filter(k => k.endsWith(`_${side}`)).length;
+  const openSide      = (side === 'long' ? getLongPositions() : getShortPositions()).length + inFlightSide;
+  const maxSide       = (side === 'long' ? cfg.maxLongPositions : cfg.maxShortPositions) ?? 3;
+  if (openSide >= maxSide) {
+    return `Batas posisi ${side.toUpperCase()} penuh (${openSide}/${maxSide})`;
+  }
+
+  const openTotal = Object.keys(getAllPositions()).length + _opening.size;
+  const maxTotal  = cfg.maxOpenPositions;
+  if (maxTotal && openTotal >= maxTotal) {
+    return `Batas total posisi penuh (${openTotal}/${maxTotal})`;
+  }
+
+  return null;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Setup leverage & margin mode sebelum order
@@ -37,6 +70,15 @@ async function setupSymbol(symbol, leverage, marginMode) {
 // ─────────────────────────────────────────────────────────────────────────────
 export async function executeLong(candidate) {
   const { symbol, signals, strategy, slPrice: candidateSlPrice } = candidate;
+
+  const blocked = checkOpenAllowed(symbol, 'long');
+  if (blocked) {
+    log('executor_warn', `OPEN LONG ${symbol} ditolak: ${blocked}`);
+    return { success: false, error: blocked };
+  }
+  const lockKey = `${symbol}_long`;
+  _opening.add(lockKey);
+
   const cfg       = config.trading;
   const mgmt      = config.management;
   const leverage  = candidate.leverage ?? cfg.leverage ?? 5;
@@ -90,6 +132,8 @@ export async function executeLong(candidate) {
   } catch (err) {
     log('executor_error', `OPEN LONG ${symbol} gagal: ${err.message}`);
     return { success: false, error: err.message };
+  } finally {
+    _opening.delete(lockKey);
   }
 }
 
@@ -98,6 +142,15 @@ export async function executeLong(candidate) {
 // ─────────────────────────────────────────────────────────────────────────────
 export async function executeShort(candidate) {
   const { symbol, signals, strategy, slPrice: candidateSlPrice } = candidate;
+
+  const blocked = checkOpenAllowed(symbol, 'short');
+  if (blocked) {
+    log('executor_warn', `OPEN SHORT ${symbol} ditolak: ${blocked}`);
+    return { success: false, error: blocked };
+  }
+  const lockKey = `${symbol}_short`;
+  _opening.add(lockKey);
+
   const cfg        = config.trading;
   const mgmt       = config.management;
   const leverage   = candidate.leverage ?? cfg.leverage ?? 5;
@@ -149,6 +202,8 @@ export async function executeShort(candidate) {
   } catch (err) {
     log('executor_error', `OPEN SHORT ${symbol} gagal: ${err.message}`);
     return { success: false, error: err.message };
+  } finally {
+    _opening.delete(lockKey);
   }
 }
 
@@ -204,9 +259,9 @@ export async function executePartialClose(symbol, side, { closePct, reason, posi
     log('executor', `🔒 PARTIAL CLOSE ${side.toUpperCase()}: ${symbol} ${closePct}% (${closeSize}) @ ${currentPrice}`);
 
     if (isDryRun) {
-      recordPartialClose(symbol, side, { closeSize, price: currentPrice, reason });
+      const pnl = recordPartialClose(symbol, side, { closeSize, price: currentPrice, reason });
       logTrade({ side: closeSide, symbol, qty: closeSize, price: currentPrice, reason: `partial-${reason}` });
-      return { success: true, exitPrice: currentPrice, closeSize };
+      return { success: true, exitPrice: currentPrice, closeSize, pnlPct: pnl?.pnlPct, pnlUsdt: pnl?.pnlUsdt };
     }
 
     const order   = await placeOrder({ symbol, side: closeSide, orderType: 'market', size: closeSize, reduceOnly: true });
@@ -214,10 +269,10 @@ export async function executePartialClose(symbol, side, { closePct, reason, posi
     const detail    = await getOrder(order?.orderId, symbol).catch(() => null);
     const fillPrice = detail ? parseFloat(detail.priceAvg || currentPrice) : currentPrice;
 
-    recordPartialClose(symbol, side, { closeSize, price: fillPrice, reason });
+    const pnl = recordPartialClose(symbol, side, { closeSize, price: fillPrice, reason });
     logTrade({ side: closeSide, symbol, qty: closeSize, price: fillPrice, reason: `partial-${reason}` });
 
-    return { success: true, exitPrice: fillPrice, closeSize };
+    return { success: true, exitPrice: fillPrice, closeSize, pnlPct: pnl?.pnlPct, pnlUsdt: pnl?.pnlUsdt };
 
   } catch (err) {
     log('executor_error', `PARTIAL CLOSE ${symbol} ${side} gagal: ${err.message}`);

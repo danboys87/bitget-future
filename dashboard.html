@@ -287,10 +287,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13
 <!-- HISTORY -->
 <div class="page" id="page-history">
   <div class="panel">
-    <div class="panel-header"><div class="panel-title">≡ Trade History</div><div class="panel-actions"><button class="btn sm" onclick="loadHistory()">↻ Refresh</button></div></div>
+    <div class="panel-header"><div class="panel-title">≡ Trade History (posisi yang sudah close)</div><div class="panel-actions"><button class="btn sm" onclick="loadHistory()">↻ Refresh</button></div></div>
     <table class="tbl">
-      <thead><tr><th>Time</th><th>Action</th><th>Symbol</th><th>Price</th><th>Qty</th><th>Reason</th></tr></thead>
-      <tbody id="history-body"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+      <thead><tr><th>Jam</th><th>Symbol</th><th>Side</th><th>Entry</th><th>Exit</th><th>PnL %</th><th>PnL USDT</th><th>Alasan</th></tr></thead>
+      <tbody id="history-body"><tr><td colspan="8" class="empty">Loading...</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -505,10 +505,24 @@ async function doManage(){await apiPost('/api/manage',{});toast('⚙ Management 
 
 async function loadHistory(){
   const r=await apiFetch('/api/history');const tb=document.getElementById('history-body');
-  if(!r.ok||!r.trades?.length){tb.innerHTML='<tr><td colspan="6" class="empty">Tidak ada history</td></tr>';return;}
-  tb.innerHTML=r.trades.map(t=>{const isOpen=t.side?.includes('open'),isLong=t.side?.includes('long');
-    const b=isOpen?`<span class="badge ${isLong?'green':'red'}">${isLong?'📈 OPEN LONG':'📉 OPEN SHORT'}</span>`:`<span class="badge gray">${isLong?'🔒 CLOSE LONG':'🔒 CLOSE SHORT'}</span>`;
-    return`<tr><td style="font-size:10px">${new Date(t.ts).toLocaleString('id-ID')}</td><td>${b}</td><td><b>${t.symbol}</b></td><td>${t.price}</td><td>${t.qty}</td><td><span class="badge gray">${t.reason||'—'}</span></td></tr>`;}).join('');
+  if(!r.ok||!r.trades?.length){tb.innerHTML='<tr><td colspan="8" class="empty">Belum ada trade yang closed</td></tr>';return;}
+  const reasons={stop_loss:'Stop Loss',break_even_sl:'Break Even',trailing_stop:'Trailing',max_hold_time:'Max Hold',manual_close:'Manual'};
+  const groups={};
+  r.trades.forEach(t=>{const d=new Date(t.closedAt).toLocaleDateString('id-ID',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});(groups[d]=groups[d]||[]).push(t);});
+  let html='';
+  for(const [date,list] of Object.entries(groups)){
+    const total=list.reduce((s,t)=>s+(t.pnlUsdt||0),0),wins=list.filter(t=>(t.pnlUsdt||0)>0).length;
+    const c=total>=0?'green':'red',sg=total>=0?'+':'';
+    html+=`<tr><td colspan="8" style="background:var(--bg);font-weight:600"><span>${date}</span><span style="color:var(--muted);font-weight:400"> · ${list.length} trade · ${wins}W/${list.length-wins}L · </span><span style="color:var(--${c})">${sg}${total.toFixed(2)} USDT</span></td></tr>`;
+    html+=list.map(t=>{
+      const up=(t.pnlUsdt||0)>=0,cls=up?'green':'red',sg2=up?'+':'';
+      const side=t.side==='long'?'<span class="badge green">📈 LONG</span>':'<span class="badge red">📉 SHORT</span>';
+      return`<tr><td style="font-size:10px">${new Date(t.closedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</td><td><b>${t.symbol}</b></td><td>${side}</td><td>${t.entryPrice}</td><td>${t.exitPrice}</td><td><span class="badge ${cls}">${sg2}${(t.pnlPct||0).toFixed(2)}%</span></td><td style="color:var(--${cls})">${sg2}${(t.pnlUsdt||0).toFixed(2)}</td><td><span class="badge gray">${reasons[t.reason]||t.reason||'—'}</span></td></tr>`;
+    }).join('');
+  }
+  const all=r.trades.reduce((s,t)=>s+(t.pnlUsdt||0),0);
+  html+=`<tr><td colspan="8" style="text-align:right;font-weight:600">Total: <span style="color:var(--${all>=0?'green':'red'})">${all>=0?'+':''}${all.toFixed(2)} USDT</span> (${r.trades.length} trade)</td></tr>`;
+  tb.innerHTML=html;
 }
 
 async function loadLogs(){

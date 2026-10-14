@@ -60,7 +60,9 @@ export function openPosition({ symbol, side, entryPrice, size, leverage, margin,
     symbol,
     side,           // 'long' | 'short'
     entryPrice,
-    size,           // contract size
+    size,           // contract size (sisa, berkurang saat partial close)
+    initialSize:    size,   // ukuran awal, untuk hitung PnL partial
+    realizedPnlUsdt: 0,     // profit yang sudah terealisasi dari partial close
     leverage,
     margin,         // USDT yang dipakai sebagai margin
     orderId,
@@ -118,10 +120,20 @@ export function setBEP(symbol, side) {
 export function recordPartialClose(symbol, side, { closeSize, price, reason }) {
   const key = posKey(symbol, side);
   const pos = _state.positions[key];
-  if (!pos) return;
-  pos.partialSells.push({ closeSize, price, reason, at: new Date().toISOString() });
+  if (!pos) return null;
+
+  const priceDiff = side === 'long' ? price - pos.entryPrice : pos.entryPrice - price;
+  const base      = pos.initialSize || pos.size;
+  const fraction  = base > 0 ? closeSize / base : 0;
+  const pnlUsdt   = (priceDiff / pos.entryPrice) * pos.margin * pos.leverage * fraction;
+  const pnlPct    = (priceDiff / pos.entryPrice) * 100 * pos.leverage; // PnL % bagian yang ditutup
+
+  pos.partialSells.push({ closeSize, price, reason, pnlUsdt, at: new Date().toISOString() });
+  pos.realizedPnlUsdt = (pos.realizedPnlUsdt || 0) + pnlUsdt;
   pos.size = Math.max(0, pos.size - closeSize);
   saveLocal(_state);
+  log('state', `✂️  Partial close ${side.toUpperCase()} ${symbol}: ${closeSize} @ ${price} | PnL=${pnlUsdt >= 0 ? '+' : ''}${pnlUsdt.toFixed(2)} USDT`);
+  return { pnlUsdt, pnlPct };
 }
 
 // ── Close Position ────────────────────────────────────────────────────────────
@@ -130,13 +142,16 @@ export function closePosition(symbol, side, { exitPrice, reason }) {
   const pos = _state.positions[key];
   if (!pos) return null;
 
-  // PnL calculation
+  // PnL: bagian sisa posisi + profit partial yang sudah terealisasi
   const priceDiff = side === 'long'
     ? exitPrice - pos.entryPrice
     : pos.entryPrice - exitPrice;
 
-  const pnlPct  = (priceDiff / pos.entryPrice) * 100 * pos.leverage;
-  const pnlUsdt = (priceDiff / pos.entryPrice) * pos.margin * pos.leverage;
+  const base      = pos.initialSize || pos.size;
+  const remaining = base > 0 ? Math.min(1, pos.size / base) : 1;
+  const finalPnl  = (priceDiff / pos.entryPrice) * pos.margin * pos.leverage * remaining;
+  const pnlUsdt   = finalPnl + (pos.realizedPnlUsdt || 0);
+  const pnlPct    = pos.margin > 0 ? (pnlUsdt / pos.margin) * 100 : 0; // % terhadap margin
 
   const closed = {
     ...pos,
@@ -193,4 +208,8 @@ export function getStats() {
     closedCount:   _state.closed.length,
     totalPnlUsdt:  _state.totalPnlUsdt || 0,
   };
+}
+
+export function getClosedPositions() {
+  return _state.closed || [];
 }

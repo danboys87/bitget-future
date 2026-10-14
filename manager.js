@@ -96,7 +96,7 @@ async function evaluatePosition(pos) {
       if (result.success) {
         setBEP(symbol, side);
         activateTrailing(symbol, side);
-        await notifyClose({ symbol, side, entryPrice, exitPrice: result.exitPrice, pnlPct: mgmt.takeProfitPct, pnlUsdt: null, reason: 'tp1_partial', leverage });
+        await notifyClose({ symbol, side, entryPrice, exitPrice: result.exitPrice, pnlPct: result.pnlPct, pnlUsdt: result.pnlUsdt, reason: 'tp1_partial', leverage });
         log('manager', `✅ TP1 done, BEP set, trailing aktif: ${symbol} ${side}`);
       }
       return;

@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { log }           from './logger.js';
 import { getCurrentPrice } from './bitgetFutures.js';
-import { getAllPositions, getStats } from './state.js';
+import { getAllPositions, getStats, getClosedPositions } from './state.js';
 import { config, saveConfig }       from './config.js';
 import { getPendingQueue }          from './approvalQueue.js';
 
@@ -147,7 +147,20 @@ async function handle(req, res) {
 
   // ── GET /api/history ───────────────────────────────────────────────────────
   if (route === '/api/history' && method === 'GET') {
-    json(res, { ok: true, trades: getClosedTrades() }); return;
+    const closed = getClosedPositions()
+      .map(t => ({
+        symbol:     t.symbol,
+        side:       t.side,
+        entryPrice: t.entryPrice,
+        exitPrice:  t.exitPrice,
+        pnlPct:     t.pnlPct,
+        pnlUsdt:    t.pnlUsdt,
+        reason:     t.reason,
+        closedAt:   t.closedAt,
+      }))
+      .sort((a, b) => new Date(b.closedAt) - new Date(a.closedAt))
+      .slice(0, 500);
+    json(res, { ok: true, trades: closed }); return;
   }
 
   // ── GET /api/logs ──────────────────────────────────────────────────────────
